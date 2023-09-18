@@ -2,6 +2,7 @@ package main.java.view;
 
 import main.java.model.Player;
 
+import javax.swing.*;
 import java.util.Arrays;
 
 //TODO: Implement the UI here
@@ -16,6 +17,7 @@ public class PlayerView implements Player {
 
     @Override
     public void setGameBoard(Boolean[][] gameBoard) {
+        new PacMan();
         System.out.println("Drawing game board: " + Arrays.deepToString(gameBoard));
     }
 

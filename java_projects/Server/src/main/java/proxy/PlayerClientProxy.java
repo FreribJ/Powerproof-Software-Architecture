@@ -152,6 +152,26 @@ public class PlayerClientProxy implements Player {
         try {
             rpcReader.readLine();
             rpcWriter.println("7");
+            String returnCode = rpcReader.readLine();
+            if (returnCode.startsWith("0")) {
+                return;
+            }
+            throw new RuntimeException(returnCode);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void gameOver() {
+        try {
+            rpcReader.readLine();
+            rpcWriter.println("8");
+            String returnCode = rpcReader.readLine();
+            if (returnCode.startsWith("0")) {
+                return;
+            }
+            throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

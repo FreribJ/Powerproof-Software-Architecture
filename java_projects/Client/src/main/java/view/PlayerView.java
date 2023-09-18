@@ -52,6 +52,11 @@ public class PlayerView implements Player {
     }
 
     @Override
+    public void gameOver() {
+        System.out.println("Game over");
+    }
+
+    @Override
     public String getName() {
         return name;
     }

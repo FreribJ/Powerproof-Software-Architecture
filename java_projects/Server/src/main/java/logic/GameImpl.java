@@ -6,13 +6,29 @@ import main.java.exception.PlayerNotInTheGameException;
 import main.java.model.Game;
 import main.java.model.Player;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GameImpl implements Game {
     private final Map<Player, PacMan> players = new HashMap<>();
+
+    //Spielboard muss man sich gedreht vorstellen
     private final Boolean[][] gameBoard = {
             {true, true, true, true, true, true, true, true, true, true, true},
+            {true, false, false, false, false, true, false, false, false, false, true},
+            {true, false, true, true, true, true, true, true, true, false, true},
+            {true, true, true, true, false, false, false, true, true, true, true},
+            {true, false, true, true, true, true, true, true, true, false, true},
+            {true, false, false, false, false, true, false, false, false, false, true},
+            {true, false, true, true, true, true, true, true, true, false, true},
+            {true, true, true, true, false, false, false, true, true, true, true},
+            {true, false, true, true, true, true, true, true, true, false, true},
+            {true, false, false, false, false, true, false, false, false, false, true},
+            {true, true, true, true, true, true, true, true, true, true, true}};
+
+    private final Boolean[][] points = {
+            {false, true, true, true, true, true, true, true, true, true, true},
             {true, false, false, false, false, true, false, false, false, false, true},
             {true, false, true, true, true, true, true, true, true, false, true},
             {true, true, true, true, false, false, false, true, true, true, true},
@@ -27,13 +43,18 @@ public class GameImpl implements Game {
 
     @Override
     public void addPlayer(Player player) throws PlayerAlreadyAddedException {
+        //Players und PacMans sind unterschiedliche Objekte, die aber miteinander verknüpft sind
+        //Player ist die Schnittstelle für den Client, PacMan ist das Objekt, das die Logik enthält
         if (players.get(player) != null) throw new PlayerAlreadyAddedException(player);
         PacMan pacMan = new PacMan(0, 0);
         players.put(player, pacMan);
         player.setGameBoard(gameBoard);
+        player.setPlayerScore(pacMan.getPoints());
         players.forEach((player1, pacMan1) -> {
             if (player1 != player) {
                 player.setOpponent(Integer.toString(pacMan1.getPacManId()), player1.getName(), pacMan1.getX(), pacMan1.getY());
+                player1.setOpponentScore(Integer.toString(pacMan.getPacManId()), pacMan.getPoints());
+                player.setOpponentScore(Integer.toString(pacMan1.getPacManId()), pacMan1.getPoints());
             }
         });
         informPlayersAboutPlayersPosition(player);
@@ -52,6 +73,7 @@ public class GameImpl implements Game {
         if (pacMan == null) throw new PlayerNotInTheGameException(player);
         pacMan.moveLeft(gameBoard);
         informPlayersAboutPlayersPosition(player);
+        checkPoints(player);
     }
 
     @Override
@@ -61,6 +83,7 @@ public class GameImpl implements Game {
         if (pacMan == null) throw new PlayerNotInTheGameException(player);
         pacMan.moveRight(gameBoard);
         informPlayersAboutPlayersPosition(player);
+        checkPoints(player);
     }
 
     @Override
@@ -70,6 +93,7 @@ public class GameImpl implements Game {
         if (pacMan == null) throw new PlayerNotInTheGameException(player);
         pacMan.moveUp(gameBoard);
         informPlayersAboutPlayersPosition(player);
+        checkPoints(player);
     }
 
     @Override
@@ -79,6 +103,7 @@ public class GameImpl implements Game {
         if (pacMan == null) throw new PlayerNotInTheGameException(player);
         pacMan.moveDown(gameBoard);
         informPlayersAboutPlayersPosition(player);
+        checkPoints(player);
     }
 
     @Override
@@ -95,5 +120,23 @@ public class GameImpl implements Game {
                 player1.setOpponent(Integer.toString(pacMan.getPacManId()), player.getName(), pacMan.getX(), pacMan.getY());
             }
         });
+    }
+
+    private void checkPoints(Player player) {
+        PacMan pacMan = players.get(player);
+        if (points[pacMan.getX()][pacMan.getY()]) {
+            pacMan.addPoints(1);
+            points[pacMan.getX()][pacMan.getY()] = false;
+            player.setPlayerScore(pacMan.getPoints());
+            players.forEach((player1, pacMan1) -> {
+                if (player1 != player) {
+                    player1.setOpponentScore(Integer.toString(pacMan.getPacManId()), pacMan.getPoints());
+                }
+            });
+        }
+        if (Arrays.stream(points).allMatch(booleans -> Arrays.stream(booleans).noneMatch(aBoolean -> aBoolean))) {
+            players.keySet().forEach(Player::gameOver);
+            gameStarted = false;
+        }
     }
 }

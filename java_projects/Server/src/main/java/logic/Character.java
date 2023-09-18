@@ -11,7 +11,7 @@ public abstract class Character {
     }
 
     public void moveRight(Boolean[][] gameBoard) {
-        if (x < gameBoard.length - 2 && gameBoard[x + 1][y]) {
+        if (x < gameBoard.length - 1 && gameBoard[x + 1][y]) {
             setX(x + 1);
         }
     }
@@ -23,7 +23,7 @@ public abstract class Character {
     }
 
     public void moveDown(Boolean[][] gameBoard) {
-        if (y < gameBoard[x].length && gameBoard[x][y + 1]) {
+        if (y < gameBoard[x].length - 1 && gameBoard[x][y + 1]) {
             setY(y + 1);
         }
     }

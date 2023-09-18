@@ -15,6 +15,8 @@ public interface Player {
 
     void gameStarted();
 
+    void gameOver();
+
     String getName();
 
     // Only in the PlayerClient

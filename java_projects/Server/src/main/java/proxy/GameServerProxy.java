@@ -117,8 +117,8 @@ public class GameServerProxy implements Runnable {
     }
 
     private void startGame() throws IOException {
-        game.startGame();
         rpcWriter.println("0: Okay");
+        game.startGame();
     }
 
     private void endConnection() throws IOException {
@@ -135,7 +135,7 @@ public class GameServerProxy implements Runnable {
     }
 
     private Player getPlayer() throws IOException {
-        rpcWriter.println("REQUEST: chatterID");
+        rpcWriter.println("REQUEST: playerID");
         String playerID = rpcReader.readLine();
         Player player = players.get(playerID);
         if (player == null) {

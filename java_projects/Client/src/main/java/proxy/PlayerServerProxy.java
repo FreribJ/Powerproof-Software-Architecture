@@ -27,7 +27,7 @@ public class PlayerServerProxy implements Runnable {
     @Override
     public void run() {
         while (running) {
-            rpcWriter.println("PROTOCOL: 1. setGameBoard; 2. setPlayerPosition; 3. setOpponent; 4. setPlayerScore; 5. setOpponentScore; 6. setGhostPosition; 7. endConnection");
+            rpcWriter.println("PROTOCOL: 1. setGameBoard; 2. setPlayerPosition; 3. setOpponent; 4. setPlayerScore; 5. setOpponentScore; 6. setGhostPosition; 7. gameStarted; 8. gameOver; 9. endConnection");
             try {
                 String input = rpcReader.readLine();
                 switch (input) {
@@ -38,7 +38,8 @@ public class PlayerServerProxy implements Runnable {
                     case "5" -> setOpponentScore();
                     case "6" -> setGhostPosition();
                     case "7" -> gameStarted();
-                    case "8" -> endConnection();
+                    case "8" -> gameOver();
+                    case "9" -> endConnection();
                     default -> rpcWriter.println("PROTOCOL ERROR: " + input);
                 }
             } catch (IOException e) {
@@ -113,8 +114,13 @@ public class PlayerServerProxy implements Runnable {
     }
 
     private void gameStarted() throws IOException {
-        player.gameStarted();
         rpcWriter.println("0: Okay");
+        player.gameStarted();
+    }
+
+    private void gameOver() throws IOException {
+        rpcWriter.println("0: Okay");
+        player.gameOver();
     }
 
     private void endConnection() throws IOException {

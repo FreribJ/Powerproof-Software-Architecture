@@ -1,5 +1,8 @@
 package main.java.proxy;
 
+import main.java.exception.GameNotStartedException;
+import main.java.exception.PlayerAlreadyAddedException;
+import main.java.exception.PlayerNotInTheGameException;
 import main.java.helper.RPCReader;
 import main.java.helper.RPCWriter;
 import main.java.model.Game;
@@ -33,7 +36,7 @@ public class GameClientProxy implements Game {
     }
 
     @Override
-    public void addPlayer(Player player) {
+    public void addPlayer(Player player) throws PlayerAlreadyAddedException {
         try {
             rpcReader.readLine();
             rpcWriter.println("1");
@@ -42,6 +45,8 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("0")) {
                 return;
             }
+            if (returnCode.startsWith("1"))
+                throw new PlayerAlreadyAddedException(player);
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -49,7 +54,7 @@ public class GameClientProxy implements Game {
     }
 
     @Override
-    public void removePlayer(Player player) {
+    public void removePlayer(Player player) throws PlayerNotInTheGameException {
         try {
             rpcReader.readLine();
             rpcWriter.println("2");
@@ -58,6 +63,8 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("0")) {
                 return;
             }
+            if (returnCode.startsWith("1"))
+                throw new PlayerNotInTheGameException(player);
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -65,7 +72,7 @@ public class GameClientProxy implements Game {
     }
 
     @Override
-    public void movePlayerLeft(Player player) {
+    public void movePlayerLeft(Player player) throws GameNotStartedException, PlayerNotInTheGameException {
         try {
             rpcReader.readLine();
             rpcWriter.println("3");
@@ -74,6 +81,10 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("0")) {
                 return;
             }
+            if (returnCode.startsWith("1"))
+                throw new GameNotStartedException();
+            if (returnCode.startsWith("2"))
+                throw new PlayerNotInTheGameException(player);
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -81,7 +92,7 @@ public class GameClientProxy implements Game {
     }
 
     @Override
-    public void movePlayerRight(Player player) {
+    public void movePlayerRight(Player player) throws GameNotStartedException, PlayerNotInTheGameException {
         try {
             rpcReader.readLine();
             rpcWriter.println("4");
@@ -90,6 +101,10 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("0")) {
                 return;
             }
+            if (returnCode.startsWith("1"))
+                throw new GameNotStartedException();
+            if (returnCode.startsWith("2"))
+                throw new PlayerNotInTheGameException(player);
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -97,7 +112,7 @@ public class GameClientProxy implements Game {
     }
 
     @Override
-    public void movePlayerUp(Player player) {
+    public void movePlayerUp(Player player) throws GameNotStartedException, PlayerNotInTheGameException {
         try {
             rpcReader.readLine();
             rpcWriter.println("5");
@@ -106,6 +121,10 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("0")) {
                 return;
             }
+            if (returnCode.startsWith("1"))
+                throw new GameNotStartedException();
+            if (returnCode.startsWith("2"))
+                throw new PlayerNotInTheGameException(player);
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -113,7 +132,7 @@ public class GameClientProxy implements Game {
     }
 
     @Override
-    public void movePlayerDown(Player player) {
+    public void movePlayerDown(Player player) throws GameNotStartedException, PlayerNotInTheGameException {
         try {
             rpcReader.readLine();
             rpcWriter.println("6");
@@ -122,6 +141,10 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("0")) {
                 return;
             }
+            if (returnCode.startsWith("1"))
+                throw new GameNotStartedException();
+            if (returnCode.startsWith("2"))
+                throw new PlayerNotInTheGameException(player);
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -1,5 +1,8 @@
 package main.java.proxy;
 
+import main.java.exception.GameNotStartedException;
+import main.java.exception.PlayerAlreadyAddedException;
+import main.java.exception.PlayerNotInTheGameException;
 import main.java.helper.RPCReader;
 import main.java.helper.RPCWriter;
 import main.java.model.Game;
@@ -52,33 +55,65 @@ public class GameServerProxy implements Runnable {
     }
 
     private void addPlayer() throws IOException {
-        game.addPlayer(getPlayer());
-        rpcWriter.println("0: Okay");
+        try {
+            game.addPlayer(getPlayer());
+            rpcWriter.println("0: Okay");
+        } catch (PlayerAlreadyAddedException e) {
+            rpcWriter.println("1: " + e.getMessage());
+        }
     }
 
     private void removePlayer() throws IOException {
-        game.removePlayer(getPlayer());
-        rpcWriter.println("0: Okay");
+        try {
+            game.removePlayer(getPlayer());
+            rpcWriter.println("0: Okay");
+        } catch (PlayerNotInTheGameException e) {
+            rpcWriter.println("1: " + e.getMessage());
+        }
     }
 
     private void movePlayerLeft() throws IOException {
-        game.movePlayerLeft(getPlayer());
-        rpcWriter.println("0: Okay");
+        try {
+            game.movePlayerLeft(getPlayer());
+            rpcWriter.println("0: Okay");
+        } catch (PlayerNotInTheGameException e) {
+            rpcWriter.println("1: " + e.getMessage());
+        } catch (GameNotStartedException e) {
+            rpcWriter.println("2: " + e.getMessage());
+        }
     }
 
     private void movePlayerRight() throws IOException {
-        game.movePlayerRight(getPlayer());
-        rpcWriter.println("0: Okay");
+        try {
+            game.movePlayerRight(getPlayer());
+            rpcWriter.println("0: Okay");
+        } catch (PlayerNotInTheGameException e) {
+            rpcWriter.println("1: " + e.getMessage());
+        } catch (GameNotStartedException e) {
+            rpcWriter.println("2: " + e.getMessage());
+        }
     }
 
     private void movePlayerUp() throws IOException {
-        game.movePlayerUp(getPlayer());
-        rpcWriter.println("0: Okay");
+        try {
+            game.movePlayerUp(getPlayer());
+            rpcWriter.println("0: Okay");
+        } catch (PlayerNotInTheGameException e) {
+            rpcWriter.println("1: " + e.getMessage());
+        } catch (GameNotStartedException e) {
+            rpcWriter.println("2: " + e.getMessage());
+        }
     }
 
     private void movePlayerDown() throws IOException {
-        game.movePlayerDown(getPlayer());
-        rpcWriter.println("0: Okay");
+        try {
+            game.movePlayerDown(getPlayer());
+            rpcWriter.println("0: Okay");
+        } catch (PlayerNotInTheGameException e) {
+            rpcWriter.println("1: " + e.getMessage());
+        } catch (GameNotStartedException e) {
+            rpcWriter.println("2: " + e.getMessage());
+        }
     }
 
     private void startGame() throws IOException {
@@ -89,7 +124,11 @@ public class GameServerProxy implements Runnable {
     private void endConnection() throws IOException {
         socket.close();
         players.values().forEach(player -> {
-            game.removePlayer(player);
+            try {
+                game.removePlayer(player);
+            } catch (PlayerNotInTheGameException e) {
+                throw new RuntimeException(e);
+            }
             player.endConnection();
         });
         running = false;

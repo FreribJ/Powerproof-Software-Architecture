@@ -1,5 +1,8 @@
 package main.java;
 
+import main.java.exception.GameNotStartedException;
+import main.java.exception.PlayerAlreadyAddedException;
+import main.java.exception.PlayerNotInTheGameException;
 import main.java.model.Game;
 import main.java.model.Player;
 import main.java.proxy.GameClientProxy;
@@ -10,7 +13,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, PlayerAlreadyAddedException, PlayerNotInTheGameException, GameNotStartedException {
         System.out.println("Welcome to the game!");
         System.out.println("------------------------");
         System.out.println("Enter IP address of server:");

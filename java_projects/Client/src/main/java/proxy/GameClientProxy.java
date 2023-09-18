@@ -82,9 +82,9 @@ public class GameClientProxy implements Game {
                 return;
             }
             if (returnCode.startsWith("1"))
-                throw new GameNotStartedException();
-            if (returnCode.startsWith("2"))
                 throw new PlayerNotInTheGameException(player);
+            if (returnCode.startsWith("2"))
+                throw new GameNotStartedException();
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -102,9 +102,9 @@ public class GameClientProxy implements Game {
                 return;
             }
             if (returnCode.startsWith("1"))
-                throw new GameNotStartedException();
-            if (returnCode.startsWith("2"))
                 throw new PlayerNotInTheGameException(player);
+            if (returnCode.startsWith("2"))
+                throw new GameNotStartedException();
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -122,9 +122,9 @@ public class GameClientProxy implements Game {
                 return;
             }
             if (returnCode.startsWith("1"))
-                throw new GameNotStartedException();
-            if (returnCode.startsWith("2"))
                 throw new PlayerNotInTheGameException(player);
+            if (returnCode.startsWith("2"))
+                throw new GameNotStartedException();
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -142,9 +142,9 @@ public class GameClientProxy implements Game {
                 return;
             }
             if (returnCode.startsWith("1"))
-                throw new GameNotStartedException();
-            if (returnCode.startsWith("2"))
                 throw new PlayerNotInTheGameException(player);
+            if (returnCode.startsWith("2"))
+                throw new GameNotStartedException();
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);

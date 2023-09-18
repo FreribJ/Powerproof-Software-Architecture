@@ -5,15 +5,15 @@ public interface Player {
 
     void setPlayerPosition(int x, int y);
 
-    void setOpponentPosition(String playerId, int x, int y);
-
-    void setOpponentName(String playerId, String name);
+    void setOpponent(String playerId, String name, int x, int y);
 
     void setPlayerScore(int score);
 
     void setOpponentScore(String playerId, int score);
 
     void setGhostPosition(String ghostId, int x, int y);
+
+    void gameStarted();
 
     String getName();
 

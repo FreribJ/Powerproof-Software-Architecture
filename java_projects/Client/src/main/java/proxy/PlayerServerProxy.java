@@ -27,17 +27,17 @@ public class PlayerServerProxy implements Runnable {
     @Override
     public void run() {
         while (running) {
-            rpcWriter.println("PROTOCOL: 1. setGameBoard; 2. setPlayerPosition; 3. setOpponentPosition; 4. setOpponentName; 5. setPlayerScore; 6. setOpponentScore; 7. setGhostPosition; 8. endConnection");
+            rpcWriter.println("PROTOCOL: 1. setGameBoard; 2. setPlayerPosition; 3. setOpponent; 4. setPlayerScore; 5. setOpponentScore; 6. setGhostPosition; 7. endConnection");
             try {
                 String input = rpcReader.readLine();
                 switch (input) {
                     case "1" -> setGameBoard();
                     case "2" -> setPlayerPosition();
-                    case "3" -> setOpponentPosition();
-                    case "4" -> setOpponentName();
-                    case "5" -> setPlayerScore();
-                    case "6" -> setOpponentScore();
-                    case "7" -> setGhostPosition();
+                    case "3" -> setOpponent();
+                    case "4" -> setPlayerScore();
+                    case "5" -> setOpponentScore();
+                    case "6" -> setGhostPosition();
+                    case "7" -> gameStarted();
                     case "8" -> endConnection();
                     default -> rpcWriter.println("PROTOCOL ERROR: " + input);
                 }
@@ -72,23 +72,16 @@ public class PlayerServerProxy implements Runnable {
         rpcWriter.println("0: Okay");
     }
 
-    private void setOpponentPosition() throws IOException {
-        rpcWriter.println("REQUEST: opponentId");
-        String opponentId = rpcReader.readLine();
-        rpcWriter.println("REQUEST: x-Position");
-        int x = Integer.parseInt(rpcReader.readLine());
-        rpcWriter.println("REQUEST: y-Position");
-        int y = Integer.parseInt(rpcReader.readLine());
-        player.setOpponentPosition(opponentId, x, y);
-        rpcWriter.println("0: Okay");
-    }
-
-    private void setOpponentName() throws IOException {
+    private void setOpponent() throws IOException {
         rpcWriter.println("REQUEST: opponentId");
         String opponentId = rpcReader.readLine();
         rpcWriter.println("REQUEST: opponentName");
         String opponentName = rpcReader.readLine();
-        player.setOpponentName(opponentId, opponentName);
+        rpcWriter.println("REQUEST: x-Position");
+        int x = Integer.parseInt(rpcReader.readLine());
+        rpcWriter.println("REQUEST: y-Position");
+        int y = Integer.parseInt(rpcReader.readLine());
+        player.setOpponent(opponentId, opponentName, x, y);
         rpcWriter.println("0: Okay");
     }
 
@@ -116,6 +109,11 @@ public class PlayerServerProxy implements Runnable {
         rpcWriter.println("REQUEST: y-Position");
         int y = Integer.parseInt(rpcReader.readLine());
         player.setGhostPosition(ghostId, x, y);
+        rpcWriter.println("0: Okay");
+    }
+
+    private void gameStarted() throws IOException {
+        player.gameStarted();
         rpcWriter.println("0: Okay");
     }
 

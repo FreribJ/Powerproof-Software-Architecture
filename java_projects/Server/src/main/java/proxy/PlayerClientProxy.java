@@ -68,12 +68,14 @@ public class PlayerClientProxy implements Player {
     }
 
     @Override
-    public void setOpponentPosition(String playerId, int x, int y) {
+    public void setOpponent(String playerId, String name, int x, int y) {
         try {
             rpcReader.readLine();
             rpcWriter.println("3");
             rpcReader.readLine();
             rpcWriter.println(playerId);
+            rpcReader.readLine();
+            rpcWriter.println(name);
             rpcReader.readLine();
             rpcWriter.println(x);
             rpcReader.readLine();
@@ -89,29 +91,10 @@ public class PlayerClientProxy implements Player {
     }
 
     @Override
-    public void setOpponentName(String playerId, String name) {
-        try {
-            rpcReader.readLine();
-            rpcWriter.println("4");
-            rpcReader.readLine();
-            rpcWriter.println(playerId);
-            rpcReader.readLine();
-            rpcWriter.println(name);
-            String returnCode = rpcReader.readLine();
-            if (returnCode.startsWith("0")) {
-                return;
-            }
-            throw new RuntimeException(returnCode);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public void setPlayerScore(int score) {
         try {
             rpcReader.readLine();
-            rpcWriter.println("5");
+            rpcWriter.println("4");
             rpcReader.readLine();
             rpcWriter.println(score);
             String returnCode = rpcReader.readLine();
@@ -128,7 +111,7 @@ public class PlayerClientProxy implements Player {
     public void setOpponentScore(String playerId, int score) {
         try {
             rpcReader.readLine();
-            rpcWriter.println("6");
+            rpcWriter.println("5");
             rpcReader.readLine();
             rpcWriter.println(playerId);
             rpcReader.readLine();
@@ -147,7 +130,7 @@ public class PlayerClientProxy implements Player {
     public void setGhostPosition(String ghostId, int x, int y) {
         try {
             rpcReader.readLine();
-            rpcWriter.println("7");
+            rpcWriter.println("6");
             rpcReader.readLine();
             rpcWriter.println(ghostId);
             rpcReader.readLine();
@@ -159,6 +142,16 @@ public class PlayerClientProxy implements Player {
                 return;
             }
             throw new RuntimeException(returnCode);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void gameStarted() {
+        try {
+            rpcReader.readLine();
+            rpcWriter.println("7");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -25,13 +25,8 @@ public class PlayerView implements Player {
     }
 
     @Override
-    public void setOpponentPosition(String playerId, int x, int y) {
-        System.out.println("Drawing opponent position: " + playerId + ": " + x + ", " + y);
-    }
-
-    @Override
-    public void setOpponentName(String playerId, String name) {
-        System.out.println("Drawing opponent name: " + playerId + ": " + name);
+    public void setOpponent(String playerId, String name, int x, int y) {
+        System.out.println("Drawing opponent: " + playerId + ": " + name + ": " + x + ", " + y);
     }
 
     @Override
@@ -47,6 +42,11 @@ public class PlayerView implements Player {
     @Override
     public void setGhostPosition(String ghostId, int x, int y) {
         System.out.println("Drawing ghost position: " + ghostId + ": " + x + ", " + y);
+    }
+
+    @Override
+    public void gameStarted() {
+        System.out.println("Game started");
     }
 
     @Override

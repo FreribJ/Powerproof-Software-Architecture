@@ -15,7 +15,7 @@ public class Ghost extends Character {
         return ghostId;
     }
 
-    public void move(int[][] gameBoard, List<PacMan> pacMans) {
+    public boolean move(int[][] gameBoard, List<PacMan> pacMans) {
         PacMan nearestPacMan = null;
         int nearestDistance = Integer.MAX_VALUE;
         for (PacMan pacMan : pacMans) {
@@ -26,13 +26,14 @@ public class Ghost extends Character {
             }
         }
         if (getX() < nearestPacMan.getX()) {
-            moveRight(gameBoard);
+            return moveRight(gameBoard);
         } else if (getX() > nearestPacMan.getX()) {
-            moveLeft(gameBoard);
+            return moveLeft(gameBoard);
         } else if (getY() < nearestPacMan.getY()) {
-            moveDown(gameBoard);
+            return moveDown(gameBoard);
         } else if (getY() > nearestPacMan.getY()) {
-            moveUp(gameBoard);
+            return moveUp(gameBoard);
         }
+        return false;
     }
 }

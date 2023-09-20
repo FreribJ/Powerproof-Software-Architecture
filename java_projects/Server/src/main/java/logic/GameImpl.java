@@ -137,6 +137,7 @@ public class GameImpl implements Game {
             gameBoard[pacMan.getX()][pacMan.getY()] = 0;
             player.setPlayerScore(pacMan.getPoints());
             players.forEach((player1, pacMan1) -> {
+                player1.setGameBoard(gameBoard);
                 if (player1 != player) {
                     player1.setOpponentScore(Integer.toString(pacMan.getPacManId()), pacMan.getPoints());
                 }
@@ -156,13 +157,16 @@ public class GameImpl implements Game {
                 throw new RuntimeException(e);
             }
             ghosts.forEach(g -> {
-                g.move(gameBoard, players.values().stream().toList());
-                players.forEach((player, pacMan) -> {
-                    player.setGhostPosition(Integer.toString(g.getGhostId()), g.getX(), g.getY());
-                    if (pacMan.getX() == g.getX() && pacMan.getY() == g.getY()) {
-                        player.setPlayerPosition(0, 0);
-                    }
-                });
+                if(g.move(gameBoard, players.values().stream().toList())) {
+                    players.forEach((player, pacMan) -> {
+                        player.setGhostPosition(Integer.toString(g.getGhostId()), g.getX(), g.getY());
+
+                        //Currently only check whether a ghost hit you
+                        if (pacMan.getX() == g.getX() && pacMan.getY() == g.getY()) {
+                            player.setPlayerPosition(0, 0);
+                        }
+                    });
+                }
             });
         }
     }

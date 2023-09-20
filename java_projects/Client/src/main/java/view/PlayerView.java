@@ -7,17 +7,22 @@ import java.util.Arrays;
 
 //TODO: Implement the UI here
 // Die View bekommt die Daten vom Server und soll hier einfach nur die Daten anzeigen
-public class PlayerView implements Player {
+public class PlayerView extends JFrame implements Player {
 
     private final String name;
 
     public PlayerView(String name) {
+        super("PacMan");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setVisible(true);
+
         this.name = name;
     }
 
     @Override
     public void setGameBoard(int[][] gameBoard) {
-        new PacMan();
         System.out.println("Drawing game board: " + Arrays.deepToString(gameBoard));
     }
 

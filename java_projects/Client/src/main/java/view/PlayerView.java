@@ -16,7 +16,7 @@ public class PlayerView implements Player {
     }
 
     @Override
-    public void setGameBoard(Boolean[][] gameBoard) {
+    public void setGameBoard(int[][] gameBoard) {
         new PacMan();
         System.out.println("Drawing game board: " + Arrays.deepToString(gameBoard));
     }

@@ -4,26 +4,26 @@ public abstract class Character {
     private int x;
     private int y;
 
-    public void moveLeft(Boolean[][] gameBoard) {
-        if (x > 0 && gameBoard[x - 1][y]) {
+    public void moveLeft(int[][] gameBoard) {
+        if (x > 0 && gameBoard[x - 1][y] != 2) {
             setX(x - 1);
         }
     }
 
-    public void moveRight(Boolean[][] gameBoard) {
-        if (x < gameBoard.length - 1 && gameBoard[x + 1][y]) {
+    public void moveRight(int[][] gameBoard) {
+        if (x < gameBoard.length - 1 && gameBoard[x + 1][y] != 2) {
             setX(x + 1);
         }
     }
 
-    public void moveUp(Boolean[][] gameBoard) {
-        if (y > 0 && gameBoard[x][y - 1]) {
+    public void moveUp(int[][] gameBoard) {
+        if (y > 0 && gameBoard[x][y - 1] != 2) {
             setY(y - 1);
         }
     }
 
-    public void moveDown(Boolean[][] gameBoard) {
-        if (y < gameBoard[x].length - 1 && gameBoard[x][y + 1]) {
+    public void moveDown(int[][] gameBoard) {
+        if (y < gameBoard[x].length - 1 && gameBoard[x][y + 1] != 2) {
             setY(y + 1);
         }
     }

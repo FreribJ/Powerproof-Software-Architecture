@@ -1,7 +1,7 @@
 package main.java.model;
 
 public interface Player {
-    void setGameBoard(Boolean[][] gameBoard);
+    void setGameBoard(int[][] gameBoard);
 
     void setPlayerPosition(int x, int y);
 

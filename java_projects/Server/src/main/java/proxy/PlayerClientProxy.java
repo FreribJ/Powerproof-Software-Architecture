@@ -24,7 +24,7 @@ public class PlayerClientProxy implements Player {
     }
 
     @Override
-    public void setGameBoard(Boolean[][] gameBoard) {
+    public void setGameBoard(int[][] gameBoard) {
         try {
             rpcReader.readLine();
             rpcWriter.println("1");
@@ -32,10 +32,10 @@ public class PlayerClientProxy implements Player {
             rpcWriter.println(gameBoard.length);
             rpcReader.readLine();
             rpcWriter.println(gameBoard[0].length);
-            for (Boolean[] booleans : gameBoard) {
-                for (Boolean aBoolean : booleans) {
+            for (int[] row : gameBoard) {
+                for (int field : row) {
                     rpcReader.readLine();
-                    rpcWriter.println(Boolean.toString(aBoolean));
+                    rpcWriter.println(field);
                 }
             }
             String returnCode = rpcReader.readLine();

@@ -6,39 +6,44 @@ import main.java.exception.PlayerNotInTheGameException;
 import main.java.model.Game;
 import main.java.model.Player;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GameImpl implements Game {
     private final Map<Player, PacMan> players = new HashMap<>();
+    private final List<Ghost> ghosts = new ArrayList<>();
 
+    //2: Wand; 1: Maze-Block; 0: Leeres Feld
     //Spielboard muss man sich gedreht vorstellen
-    private final Boolean[][] gameBoard = {
-            {true, true, true, true, true, true, true, true, true, true, true},
-            {true, false, false, false, false, true, false, false, false, false, true},
-            {true, false, true, true, true, true, true, true, true, false, true},
-            {true, true, true, true, false, false, false, true, true, true, true},
-            {true, false, true, true, true, true, true, true, true, false, true},
-            {true, false, false, false, false, true, false, false, false, false, true},
-            {true, false, true, true, true, true, true, true, true, false, true},
-            {true, true, true, true, false, false, false, true, true, true, true},
-            {true, false, true, true, true, true, true, true, true, false, true},
-            {true, false, false, false, false, true, false, false, false, false, true},
-            {true, true, true, true, true, true, true, true, true, true, true}};
-
-    private final Boolean[][] points = {
-            {false, true, true, true, true, true, true, true, true, true, true},
-            {true, false, false, false, false, true, false, false, false, false, true},
-            {true, false, true, true, true, true, true, true, true, false, true},
-            {true, true, true, true, false, false, false, true, true, true, true},
-            {true, false, true, true, true, true, true, true, true, false, true},
-            {true, false, false, false, false, true, false, false, false, false, true},
-            {true, false, true, true, true, true, true, true, true, false, true},
-            {true, true, true, true, false, false, false, true, true, true, true},
-            {true, false, true, true, true, true, true, true, true, false, true},
-            {true, false, false, false, false, true, false, false, false, false, true},
-            {true, true, true, true, true, true, true, true, true, true, true}};
+    int[][] gameBoard = {
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 0, 0, 0, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2},
+            {2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 0, 0, 0, 2, 1, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 1, 2},
+            {2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 0, 0, 0, 2, 1, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 1, 2},
+            {2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 0, 0, 0, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2},
+            {2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 2},
+            {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
+            {2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
+    };
     private boolean gameStarted = false;
 
     @Override
@@ -46,7 +51,7 @@ public class GameImpl implements Game {
         //Players und PacMans sind unterschiedliche Objekte, die aber miteinander verknüpft sind
         //Player ist die Schnittstelle für den Client, PacMan ist das Objekt, das die Logik enthält
         if (players.get(player) != null) throw new PlayerAlreadyAddedException(player);
-        PacMan pacMan = new PacMan(0, 0);
+        PacMan pacMan = new PacMan(1, 1);
         players.put(player, pacMan);
         player.setGameBoard(gameBoard);
         player.setPlayerScore(pacMan.getPoints());
@@ -110,6 +115,9 @@ public class GameImpl implements Game {
     public void startGame() {
         players.keySet().forEach(Player::gameStarted);
         gameStarted = true;
+        Ghost ghost = new Ghost(15, 15);
+        ghosts.add(ghost);
+        new Thread(this::moveGhosts).start();
     }
 
     private void informPlayersAboutPlayersPosition(Player player) {
@@ -124,9 +132,9 @@ public class GameImpl implements Game {
 
     private void checkPoints(Player player) {
         PacMan pacMan = players.get(player);
-        if (points[pacMan.getX()][pacMan.getY()]) {
+        if (gameBoard[pacMan.getX()][pacMan.getY()] == 1) {
             pacMan.addPoints(1);
-            points[pacMan.getX()][pacMan.getY()] = false;
+            gameBoard[pacMan.getX()][pacMan.getY()] = 0;
             player.setPlayerScore(pacMan.getPoints());
             players.forEach((player1, pacMan1) -> {
                 if (player1 != player) {
@@ -134,9 +142,28 @@ public class GameImpl implements Game {
                 }
             });
         }
-        if (Arrays.stream(points).allMatch(booleans -> Arrays.stream(booleans).noneMatch(aBoolean -> aBoolean))) {
+        if (Arrays.stream(gameBoard).allMatch(row -> Arrays.stream(row).noneMatch(field -> field == 1))) {
             players.keySet().forEach(Player::gameOver);
             gameStarted = false;
+        }
+    }
+
+    private void moveGhosts() {
+        while (gameStarted) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            ghosts.forEach(g -> {
+                g.move(gameBoard, players.values().stream().toList());
+                players.forEach((player, pacMan) -> {
+                    player.setGhostPosition(Integer.toString(g.getGhostId()), g.getX(), g.getY());
+                    if (pacMan.getX() == g.getX() && pacMan.getY() == g.getY()) {
+                        player.setPlayerPosition(0, 0);
+                    }
+                });
+            });
         }
     }
 }

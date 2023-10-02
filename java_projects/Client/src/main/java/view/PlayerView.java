@@ -1,47 +1,29 @@
 package main.java.view;
 
 import main.java.model.Player;
+import sas.Text;
+import sas.View;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
 //TODO: Implement the UI here
 // Die View bekommt die Daten vom Server und soll hier einfach nur die Daten anzeigen
-public class PlayerView extends JFrame implements Player {
-
+public class PlayerView implements Player {
     private final String name;
-    private final JLabel header = new JLabel("PacMan");
-    private GameBoardView gameBoardView;
+    private View view;
 
     public PlayerView(String name) {
-        super("PacMan");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(750, 750);
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        Container cp = getContentPane();
-        cp.setLayout(null);
-        cp.setBackground(Color.BLACK);
-
-        header.setBounds(0,0,750,50);
-        header.setHorizontalAlignment(SwingConstants.CENTER);
-        header.setHorizontalTextPosition(SwingConstants.CENTER);
-        header.setForeground(Color.WHITE);
-        header.setFont(new Font("Arial", Font.BOLD, 30));
-        cp.add(header);
-
-        gameBoardView = new GameBoardView();
-        gameBoardView.setBounds(95,50,560,620);
-        cp.add(gameBoardView);
-
+        view = new View(800, 600, "PacMan");
+        view.setBackgroundColor(Color.BLACK);
+        Text header = new Text(350, 10, "PacMan");
+        header.setFontColor(Color.WHITE);
+        header.setFontMonospaced(true, 30);
         this.name = name;
     }
 
     @Override
     public void setGameBoard(int[][] gameBoard) {
-        gameBoardView.setGameBoard(gameBoard);
         System.out.println("Drawing game board: " + Arrays.deepToString(gameBoard));
     }
 

@@ -5,17 +5,20 @@ import sas.Text;
 import sas.View;
 
 import java.awt.*;
-import java.util.Arrays;
+import java.util.*;
 
 //TODO: Implement the UI here
 // Die View bekommt die Daten vom Server und soll hier einfach nur die Daten anzeigen
 public class PlayerView implements Player {
     private final String name;
     private View view;
+    Map<String, GhostView> ghosts = new HashMap<>();
+    PacmanView pacman;
+    Map<String, PacmanView> opponents = new HashMap<>();
+    private GameBoardView gameBoard;
 
-    public PlayerView(String name) {
-        view = new View(800, 600, "PacMan");
-        view.setBackgroundColor(Color.BLACK);
+    public PlayerView(String name, View view) {
+        this.view = view;
         Text header = new Text(350, 10, "PacMan");
         header.setFontColor(Color.WHITE);
         header.setFontMonospaced(true, 30);
@@ -24,6 +27,11 @@ public class PlayerView implements Player {
 
     @Override
     public void setGameBoard(int[][] gameBoard) {
+        if(this.gameBoard == null) {
+            this.gameBoard = new GameBoardView(gameBoard, view);
+        }
+        else
+            this.gameBoard.updateGameBoard(gameBoard);
         System.out.println("Drawing game board: " + Arrays.deepToString(gameBoard));
     }
 
@@ -49,6 +57,12 @@ public class PlayerView implements Player {
 
     @Override
     public void setGhostPosition(String ghostId, int x, int y) {
+        GhostView ghost = ghosts.get(ghostId);
+        if(ghost == null) {
+            ghost = new GhostView(x, y);
+            ghosts.put(ghostId, ghost);
+        } else
+            ghost.moveToCoordinate(x, y);
         System.out.println("Drawing ghost position: " + ghostId + ": " + x + ", " + y);
     }
 

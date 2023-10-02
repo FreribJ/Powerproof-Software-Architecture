@@ -7,7 +7,9 @@ import main.java.model.Game;
 import main.java.model.Player;
 import main.java.proxy.GameClientProxy;
 import main.java.view.PlayerView;
+import sas.View;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
@@ -21,7 +23,9 @@ public class Main {
         String ip = scanner.next();
         System.out.println("------------------------");
         System.out.println("Enter your name:");
-        Player player = new PlayerView(scanner.next());
+        View view = new View(900, 1100, "PacMan");
+        view.setBackgroundColor(Color.BLACK);
+        Player player = new PlayerView(scanner.next(), view);
         Socket socket = new Socket(ip, 10000);
         Game game = new GameClientProxy(socket);
         boolean running = true;

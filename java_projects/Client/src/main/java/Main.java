@@ -31,36 +31,36 @@ public class Main {
         boolean running = true;
         while (running) {
             System.out.println("PROTOCOL: 1. addPlayer; 2. removePlayer; 3. movePlayerLeft; 4. movePlayerRight; 5. movePlayerUp; 6. movePlayerDown; 7. startGame; 8. endConnection");
-            String choice = scanner.next();
-            switch (choice) {
-                case "1":
-                    game.addPlayer(player);
-                    break;
-                case "2":
-                    game.removePlayer(player);
-                    break;
-                case "3":
-                    game.movePlayerLeft(player);
-                    break;
-                case "4":
-                    game.movePlayerRight(player);
-                    break;
-                case "5":
-                    game.movePlayerUp(player);
-                    break;
-                case "6":
-                    game.movePlayerDown(player);
-                    break;
-                case "7":
-                    game.startGame();
-                    break;
-                case "8":
-                    game.endConnection();
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Wrong input");
-            }
+                char choice = view.keyGetChar();
+                switch (choice) {
+                    case '1':
+                        game.addPlayer(player);
+                        break;
+                    case '2':
+                        game.removePlayer(player);
+                        break;
+                    case 'a':
+                        game.movePlayerLeft(player);
+                        break;
+                    case 'd':
+                        game.movePlayerRight(player);
+                        break;
+                    case 'w':
+                        game.movePlayerUp(player);
+                        break;
+                    case 's':
+                        game.movePlayerDown(player);
+                        break;
+                    case '7':
+                        game.startGame();
+                        break;
+                    case '8':
+                        game.endConnection();
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("Wrong input");
+                }
         }
     }
 }

@@ -37,11 +37,24 @@ public class PlayerView implements Player {
 
     @Override
     public void setPlayerPosition(int x, int y) {
+        if (this.pacman == null) {
+            this.pacman = new PacmanView(false, x, y);
+        } else {
+        this.pacman.moveToCoordinate(x, y);
         System.out.println("Drawing player position: " + x + ", " + y);
+
+        }
     }
 
     @Override
     public void setOpponent(String playerId, String name, int x, int y) {
+        PacmanView opponent = opponents.get(playerId);
+        if (opponent == null) {
+            opponent = new PacmanView(true, x , y);
+            opponents.put(playerId, opponent);
+        } else {
+            opponent.moveToCoordinate(x, y);
+        }
         System.out.println("Drawing opponent: " + playerId + ": " + name + ": " + x + ", " + y);
     }
 

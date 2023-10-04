@@ -7,7 +7,7 @@ import main.java.model.Game;
 import main.java.model.Player;
 import main.java.proxy.GameClientProxy;
 import main.java.view.PlayerView;
-import sas.View;
+import sas.*;
 
 import java.awt.*;
 import java.io.IOException;

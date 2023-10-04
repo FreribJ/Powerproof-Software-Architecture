@@ -23,7 +23,7 @@ public class Main {
         String ip = scanner.next();
         System.out.println("------------------------");
         System.out.println("Enter your name:");
-        View view = new View(900, 1100, "PacMan");
+        View view = new View(800, 900, "PacMan");
         view.setBackgroundColor(Color.BLACK);
         Player player = new PlayerView(scanner.next(), view);
         Socket socket = new Socket(ip, 10000);

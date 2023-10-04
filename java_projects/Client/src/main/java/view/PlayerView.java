@@ -16,6 +16,7 @@ public class PlayerView implements Player {
     PacmanView pacman;
     Map<String, PacmanView> opponents = new HashMap<>();
     private GameBoardView gameBoard;
+    private static final int pixelWidth = 20;
 
     public PlayerView(String name, View view) {
         this.view = view;
@@ -28,7 +29,7 @@ public class PlayerView implements Player {
     @Override
     public void setGameBoard(int[][] gameBoard) {
         if(this.gameBoard == null) {
-            this.gameBoard = new GameBoardView(gameBoard, view);
+            this.gameBoard = new GameBoardView(gameBoard, view, pixelWidth);
         }
         else
             this.gameBoard.updateGameBoard(gameBoard);
@@ -38,7 +39,7 @@ public class PlayerView implements Player {
     @Override
     public void setPlayerPosition(int x, int y) {
         if (this.pacman == null) {
-            this.pacman = new PacmanView(false, x, y);
+            this.pacman = new PacmanView(false, x, y, pixelWidth);
         } else {
         this.pacman.moveToCoordinate(x, y);
         System.out.println("Drawing player position: " + x + ", " + y);
@@ -50,7 +51,7 @@ public class PlayerView implements Player {
     public void setOpponent(String playerId, String name, int x, int y) {
         PacmanView opponent = opponents.get(playerId);
         if (opponent == null) {
-            opponent = new PacmanView(true, x , y);
+            opponent = new PacmanView(true, x , y, pixelWidth);
             opponents.put(playerId, opponent);
         } else {
             opponent.moveToCoordinate(x, y);
@@ -72,7 +73,7 @@ public class PlayerView implements Player {
     public void setGhostPosition(String ghostId, int x, int y) {
         GhostView ghost = ghosts.get(ghostId);
         if(ghost == null) {
-            ghost = new GhostView(x, y);
+            ghost = new GhostView(x, y, pixelWidth);
             ghosts.put(ghostId, ghost);
         } else
             ghost.moveToCoordinate(x, y);

@@ -5,12 +5,14 @@ import sas.Rectangle;
 import java.awt.*;
 
 public class GhostView extends Rectangle {
+    private int pixelWidth;
 
-    public GhostView(int x, int y) {
-        super(x*30, y*30, 30, 30, Color.CYAN);
+    public GhostView(int x, int y, int pixelWidth) {
+        super(x*pixelWidth, y*pixelWidth, pixelWidth, pixelWidth, Color.CYAN);
+        this.pixelWidth = pixelWidth;
     }
 
     public void moveToCoordinate(int x, int y) {
-        this.moveTo(x*30, y*30);
+        this.moveTo(x*pixelWidth, y*pixelWidth);
     }
 }

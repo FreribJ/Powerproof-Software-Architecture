@@ -13,8 +13,10 @@ public class GameBoardView {
     List<Circle> circles = new ArrayList<>();
     int[][] gameBoard;
     private View view;
+    private int pixelWidth;
 
-    public GameBoardView(int[][] gameBoard, View view) {
+    public GameBoardView(int[][] gameBoard, View view, int pixelWidth) {
+        this.pixelWidth = pixelWidth;
         this.gameBoard = gameBoard;
         this.view = view;
         draw();
@@ -35,9 +37,9 @@ public class GameBoardView {
             for (int j = 0; j < row.length; j++) {
                 int field = row[j];
                 if (field == 2) {
-                    boarders.add(new Rectangle(i * 30, j * 30, 30, 30, Color.BLUE));
+                    boarders.add(new Rectangle(i * pixelWidth, j * pixelWidth, pixelWidth, pixelWidth, Color.BLUE));
                 } else if (field == 1) {
-                    circles.add(new Circle(i * 30 + 14, j * 30 + 14, 2, Color.WHITE));
+                    circles.add(new Circle(i * pixelWidth + pixelWidth / 2 - 1, j * pixelWidth + pixelWidth / 2 - 1, 2, Color.WHITE));
                 }
             }
         }

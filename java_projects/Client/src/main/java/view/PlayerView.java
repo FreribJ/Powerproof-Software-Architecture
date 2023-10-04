@@ -7,16 +7,17 @@ import sas.View;
 import java.awt.*;
 import java.util.*;
 
-//TODO: Implement the UI here
-// Die View bekommt die Daten vom Server und soll hier einfach nur die Daten anzeigen
 public class PlayerView implements Player {
+    private static final int pixelWidth = 20;
     private final String name;
     private View view;
-    Map<String, GhostView> ghosts = new HashMap<>();
-    PacmanView pacman;
-    Map<String, PacmanView> opponents = new HashMap<>();
+    private Map<String, GhostView> ghosts = new HashMap<>();
+    private PacmanView pacman;
+    private Map<String, PacmanView> opponents = new HashMap<>();
     private GameBoardView gameBoard;
-    private static final int pixelWidth = 20;
+    private Text score;
+    private Map<String, Text> opponentScores = new HashMap<>();
+    private Map<String, String> opponentNames = new HashMap<>();
 
     public PlayerView(String name, View view) {
         this.view = view;
@@ -28,12 +29,10 @@ public class PlayerView implements Player {
 
     @Override
     public void setGameBoard(int[][] gameBoard) {
-        if(this.gameBoard == null) {
+        if (this.gameBoard == null) {
             this.gameBoard = new GameBoardView(gameBoard, view, pixelWidth);
-        }
-        else
+        } else
             this.gameBoard.updateGameBoard(gameBoard);
-        System.out.println("Drawing game board: " + Arrays.deepToString(gameBoard));
     }
 
     @Override
@@ -41,9 +40,7 @@ public class PlayerView implements Player {
         if (this.pacman == null) {
             this.pacman = new PacmanView(false, x, y, pixelWidth);
         } else {
-        this.pacman.moveToCoordinate(x, y);
-        System.out.println("Drawing player position: " + x + ", " + y);
-
+            this.pacman.moveToCoordinate(x, y);
         }
     }
 
@@ -51,33 +48,47 @@ public class PlayerView implements Player {
     public void setOpponent(String playerId, String name, int x, int y) {
         PacmanView opponent = opponents.get(playerId);
         if (opponent == null) {
-            opponent = new PacmanView(true, x , y, pixelWidth);
+            opponent = new PacmanView(true, x, y, pixelWidth);
             opponents.put(playerId, opponent);
+            opponentNames.put(playerId, name);
         } else {
             opponent.moveToCoordinate(x, y);
         }
-        System.out.println("Drawing opponent: " + playerId + ": " + name + ": " + x + ", " + y);
+        System.out.println("setOpponent: " + playerId + " " + name + " " + x + " " + y);
     }
 
     @Override
     public void setPlayerScore(int score) {
-        System.out.println("Drawing player score: " + score);
+        if (this.score == null) {
+            this.score = new Text(100, 100, "Score: " + score);
+            this.score.setFontColor(Color.WHITE);
+        } else {
+            this.score.setText("Score: " + score);
+        }
+        System.out.println("setPlayerScore: " + score);
     }
 
     @Override
     public void setOpponentScore(String playerId, int score) {
-        System.out.println("Drawing opponent score: " + playerId + ": " + score);
+        Text opponentScore = opponentScores.get(playerId);
+        if (opponentScore == null) {
+            opponentScore = new Text(100 + (150 * (opponentScores.size() + 1)), 100, opponentNames.get(playerId) + ": " + score);
+            opponentScore.setFontColor(Color.WHITE);
+            opponentScores.put(playerId, opponentScore);
+        } else {
+            opponentScore.setText(opponentNames.get(playerId) + ": " + score);
+        }
+        System.out.println("setOpponentScore: " + playerId + " " + score);
     }
 
     @Override
     public void setGhostPosition(String ghostId, int x, int y) {
         GhostView ghost = ghosts.get(ghostId);
-        if(ghost == null) {
+        if (ghost == null) {
             ghost = new GhostView(x, y, pixelWidth);
             ghosts.put(ghostId, ghost);
         } else
             ghost.moveToCoordinate(x, y);
-        System.out.println("Drawing ghost position: " + ghostId + ": " + x + ", " + y);
     }
 
     @Override

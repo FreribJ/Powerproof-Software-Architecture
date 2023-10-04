@@ -37,9 +37,9 @@ public class GameBoardView {
             for (int j = 0; j < row.length; j++) {
                 int field = row[j];
                 if (field == 2) {
-                    boarders.add(new Rectangle(i * pixelWidth, j * pixelWidth, pixelWidth, pixelWidth, Color.BLUE));
+                    boarders.add(new Rectangle(i * pixelWidth + 120, j * pixelWidth + 170, pixelWidth, pixelWidth, Color.BLUE));
                 } else if (field == 1) {
-                    circles.add(new Circle(i * pixelWidth + pixelWidth / 2 - 1, j * pixelWidth + pixelWidth / 2 - 1, 2, Color.WHITE));
+                    circles.add(new Circle(i * pixelWidth + pixelWidth / 2 + 119, j * pixelWidth + pixelWidth / 2 + 169, 2, Color.WHITE));
                 }
             }
         }

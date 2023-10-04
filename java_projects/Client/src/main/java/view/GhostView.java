@@ -8,11 +8,11 @@ public class GhostView extends Rectangle {
     private int pixelWidth;
 
     public GhostView(int x, int y, int pixelWidth) {
-        super(x*pixelWidth, y*pixelWidth, pixelWidth, pixelWidth, Color.CYAN);
+        super(x*pixelWidth + 120, y*pixelWidth + 170, pixelWidth, pixelWidth, Color.CYAN);
         this.pixelWidth = pixelWidth;
     }
 
     public void moveToCoordinate(int x, int y) {
-        this.moveTo(x*pixelWidth, y*pixelWidth);
+        this.moveTo(x*pixelWidth + 120, y*pixelWidth + 170);
     }
 }

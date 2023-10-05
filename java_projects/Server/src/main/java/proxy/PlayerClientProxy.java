@@ -32,12 +32,14 @@ public class PlayerClientProxy implements Player {
             rpcWriter.println(gameBoard.length);
             rpcReader.readLine();
             rpcWriter.println(gameBoard[0].length);
-            for (int[] row : gameBoard) {
-                for (int field : row) {
-                    rpcReader.readLine();
-                    rpcWriter.println(field);
+            rpcReader.readLine();
+            String gameBoardString = "";
+            for (int i = 0; i < gameBoard.length; i++) {
+                for (int j = 0; j < gameBoard[0].length; j++) {
+                    gameBoardString += gameBoard[i][j];
                 }
             }
+            rpcWriter.println(gameBoardString);
             String returnCode = rpcReader.readLine();
             if (returnCode.startsWith("0")) {
                 return;

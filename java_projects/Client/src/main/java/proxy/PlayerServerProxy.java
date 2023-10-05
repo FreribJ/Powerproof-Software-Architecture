@@ -54,10 +54,13 @@ public class PlayerServerProxy implements Runnable {
         rpcWriter.println("REQUEST: gameBoardWidth");
         int gameBoardWidth = Integer.parseInt(rpcReader.readLine());
         int[][] gameBoard = new int[gameBoardHeight][gameBoardWidth];
+        rpcWriter.println("REQUEST: gameBoard");
+        String gameBoardString = rpcReader.readLine();
+        int counter = 0;
         for (int i = 0; i < gameBoardHeight; i++) {
             for (int j = 0; j < gameBoardWidth; j++) {
-                rpcWriter.println("REQUEST: gameBoard[" + i + "][" + j + "]");
-                gameBoard[i][j] = Integer.parseInt(rpcReader.readLine());
+                gameBoard[i][j] = Integer.parseInt(gameBoardString.substring(counter, counter + 1));
+                counter++;
             }
         }
         player.setGameBoard(gameBoard);

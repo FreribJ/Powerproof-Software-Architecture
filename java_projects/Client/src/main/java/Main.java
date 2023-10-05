@@ -26,6 +26,7 @@ public class Main {
         View view = new View(800, 800, "PacMan");
         view.setBackgroundColor(Color.BLACK);
         Player player = new PlayerView(scanner.next(), view);
+        scanner.close();
         Socket socket = new Socket(ip, 10000);
         Game game = new GameClientProxy(socket);
         boolean running = true;

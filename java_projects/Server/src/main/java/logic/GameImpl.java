@@ -29,8 +29,8 @@ public class GameImpl implements Game {
             {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
             {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 0, 0, 0, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
             {2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2},
-            {2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 0, 0, 0, 2, 1, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 1, 2},
-            {2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 0, 0, 0, 2, 1, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 1, 2},
+            {2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 1, 2},
+            {2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 1, 2},
             {2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2},
             {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 0, 0, 0, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
             {2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2},
@@ -116,9 +116,13 @@ public class GameImpl implements Game {
     public void startGame() {
         players.keySet().forEach(Player::gameStarted);
         gameStarted = true;
-//        Ghost ghost = new Ghost(15, 15);
-//        ghosts.add(ghost);
-//        new Thread(this::moveGhosts).start();
+        for (int i = 0; i < 3; i++) {
+            int x = (int) (Math.random() * 6 + 11);
+            int y = (int) (Math.random() * 3 + 13);
+            Ghost ghost = new Ghost(x, y);
+            ghosts.add(ghost);
+        }
+        new Thread(this::moveGhosts).start();
     }
 
     private void informPlayersAboutPlayersPosition(Player player) {
@@ -158,16 +162,16 @@ public class GameImpl implements Game {
                 throw new RuntimeException(e);
             }
             ghosts.forEach(g -> {
-                if(g.move(gameBoard, players.values().stream().toList())) {
-                    players.forEach((player, pacMan) -> {
-                        player.setGhostPosition(Integer.toString(g.getGhostId()), g.getX(), g.getY());
+                players.forEach((player, pacMan) -> {
+                    player.setGhostPosition(Integer.toString(g.getGhostId()), g.getX(), g.getY());
 
-                        //Currently only check whether a ghost hit you
-                        if (pacMan.getX() == g.getX() && pacMan.getY() == g.getY()) {
-                            player.setPlayerPosition(0, 0);
-                        }
-                    });
-                }
+                    if (pacMan.getX() == g.getX() && pacMan.getY() == g.getY()) {
+                        pacMan.setX(1);
+                        pacMan.setY(1);
+                        player.setPlayerPosition(1, 1);
+                    }
+                });
+                g.move(gameBoard);
             });
         }
     }

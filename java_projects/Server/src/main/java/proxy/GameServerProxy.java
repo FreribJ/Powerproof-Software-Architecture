@@ -49,7 +49,8 @@ public class GameServerProxy implements Runnable {
                     default -> rpcWriter.println("PROTOCOL ERROR: " + input);
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println(e.getMessage());
+//                throw new RuntimeException(e);
             }
         }
     }
@@ -145,6 +146,7 @@ public class GameServerProxy implements Runnable {
             String port = rpcReader.readLine();
             rpcWriter.println("REQUEST: name");
             String name = rpcReader.readLine();
+            System.out.println(ip + ":" + port + " " + name);
             player = new PlayerClientProxy(new Socket(ip, Integer.parseInt(port)), name);
             players.put(playerID, player);
         }

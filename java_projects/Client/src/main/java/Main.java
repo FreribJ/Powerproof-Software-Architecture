@@ -16,17 +16,25 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException, PlayerAlreadyAddedException, PlayerNotInTheGameException, GameNotStartedException {
-        System.out.println("Welcome to the game!");
-        System.out.println("------------------------");
-        System.out.println("Enter IP address of server:");
-        Scanner scanner = new Scanner(System.in);
-        String ip = scanner.next();
-        System.out.println("------------------------");
-        System.out.println("Enter your name:");
+        String ip = "";
+        String name = "";
+        if (args.length >= 2) {
+            ip = args[0];
+            name = args[1];
+        } else {
+            System.out.println("Welcome to the game!");
+            System.out.println("------------------------");
+            System.out.println("Enter IP address of server:");
+            Scanner scanner = new Scanner(System.in);
+            ip = scanner.next();
+            System.out.println("------------------------");
+            System.out.println("Enter your name:");
+            name = scanner.next();
+            scanner.close();
+        }
         View view = new View(800, 800, "PacMan");
         view.setBackgroundColor(Color.BLACK);
-        Player player = new PlayerView(scanner.next(), view);
-        scanner.close();
+        Player player = new PlayerView(name, view);
         Socket socket = new Socket(ip, 10000);
         Game game = new GameClientProxy(socket);
         boolean running = true;

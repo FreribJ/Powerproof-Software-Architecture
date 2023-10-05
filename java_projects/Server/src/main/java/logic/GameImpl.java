@@ -115,9 +115,9 @@ public class GameImpl implements Game {
     public void startGame() {
         players.keySet().forEach(Player::gameStarted);
         gameStarted = true;
-        Ghost ghost = new Ghost(15, 15);
-        ghosts.add(ghost);
-        new Thread(this::moveGhosts).start();
+//        Ghost ghost = new Ghost(15, 15);
+//        ghosts.add(ghost);
+//        new Thread(this::moveGhosts).start();
     }
 
     private void informPlayersAboutPlayersPosition(Player player) {

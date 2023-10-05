@@ -48,6 +48,8 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("1"))
                 throw new PlayerAlreadyAddedException(player);
             throw new RuntimeException(returnCode);
+        } catch (PlayerAlreadyAddedException e) {
+            System.out.println("Player not in the game");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -66,6 +68,8 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("1"))
                 throw new PlayerNotInTheGameException(player);
             throw new RuntimeException(returnCode);
+        } catch (PlayerNotInTheGameException e) {
+            System.out.println("Player not in the game");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -86,7 +90,12 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("2"))
                 throw new GameNotStartedException();
             throw new RuntimeException(returnCode);
-        } catch (IOException e) {
+        } catch (GameNotStartedException e) {
+            System.out.println("Game not started yet");
+        } catch (PlayerNotInTheGameException e) {
+            System.out.println("Player not in the game");
+        } catch
+        (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -106,6 +115,10 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("2"))
                 throw new GameNotStartedException();
             throw new RuntimeException(returnCode);
+        } catch (GameNotStartedException e) {
+            System.out.println("Game not started yet");
+        } catch (PlayerNotInTheGameException e) {
+            System.out.println("Player not in the game");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -126,6 +139,10 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("2"))
                 throw new GameNotStartedException();
             throw new RuntimeException(returnCode);
+        } catch (GameNotStartedException e) {
+            System.out.println("Game not started yet");
+        } catch (PlayerNotInTheGameException e) {
+            System.out.println("Player not in the game");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -146,6 +163,10 @@ public class GameClientProxy implements Game {
             if (returnCode.startsWith("2"))
                 throw new GameNotStartedException();
             throw new RuntimeException(returnCode);
+        } catch (GameNotStartedException e) {
+            System.out.println("Game not started yet");
+        } catch (PlayerNotInTheGameException e) {
+            System.out.println("Player not in the game");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

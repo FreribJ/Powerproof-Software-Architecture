@@ -7,9 +7,10 @@ import main.java.model.Game;
 import main.java.model.Player;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameImpl implements Game {
-    private final Map<Player, PacMan> players = new HashMap<>();
+    private final Map<Player, PacMan> players = new ConcurrentHashMap<>();
     private final List<Ghost> ghosts = new ArrayList<>();
 
     //2: Wand; 1: Maze-Block; 0: Leeres Feld

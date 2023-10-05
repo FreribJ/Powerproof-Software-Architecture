@@ -16,6 +16,8 @@ public class PlayerClientProxy implements Player {
     private final RPCReader rpcReader;
     private final RPCWriter rpcWriter;
 
+    private boolean running = false;
+
     public PlayerClientProxy(Socket socket, String name) throws IOException {
         this.name = name;
         this.socket = socket;
@@ -24,7 +26,7 @@ public class PlayerClientProxy implements Player {
     }
 
     @Override
-    public void setGameBoard(int[][] gameBoard) {
+    public synchronized void setGameBoard(int[][] gameBoard) {
         try {
             rpcReader.readLine();
             rpcWriter.println("1");
@@ -47,11 +49,13 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            running = false;
         }
     }
 
     @Override
-    public void setPlayerPosition(int x, int y) {
+    public synchronized void setPlayerPosition(int x, int y)  {
         try {
             rpcReader.readLine();
             rpcWriter.println("2");
@@ -64,14 +68,17 @@ public class PlayerClientProxy implements Player {
                 return;
             }
             throw new RuntimeException(returnCode);
-        } catch (IOException e) {
+        } catch (IOException  e) {
             throw new RuntimeException(e);
+        } finally {
+            running = false;
         }
     }
 
     @Override
-    public void setOpponent(String playerId, String name, int x, int y) {
+    public synchronized void setOpponent(String playerId, String name, int x, int y)  {
         try {
+
             rpcReader.readLine();
             rpcWriter.println("3");
             rpcReader.readLine();
@@ -87,13 +94,15 @@ public class PlayerClientProxy implements Player {
                 return;
             }
             throw new RuntimeException(returnCode);
-        } catch (IOException e) {
+        } catch (IOException  e) {
             throw new RuntimeException(e);
+        } finally {
+            running = false;
         }
     }
 
     @Override
-    public void setPlayerScore(int score) {
+    public synchronized void setPlayerScore(int score)  {
         try {
             rpcReader.readLine();
             rpcWriter.println("4");
@@ -106,11 +115,13 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            running = false;
         }
     }
 
     @Override
-    public void setOpponentScore(String playerId, int score) {
+    public synchronized void setOpponentScore(String playerId, int score)  {
         try {
             rpcReader.readLine();
             rpcWriter.println("5");
@@ -123,13 +134,15 @@ public class PlayerClientProxy implements Player {
                 return;
             }
             throw new RuntimeException(returnCode);
-        } catch (IOException e) {
+        } catch (IOException  e) {
             throw new RuntimeException(e);
+        } finally {
+            running = false;
         }
     }
 
     @Override
-    public void setGhostPosition(String ghostId, int x, int y) {
+    public synchronized void setGhostPosition(String ghostId, int x, int y)  {
         try {
             rpcReader.readLine();
             rpcWriter.println("6");
@@ -143,14 +156,15 @@ public class PlayerClientProxy implements Player {
             if (returnCode.startsWith("0")) {
                 return;
             }
-            throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            running = false;
         }
     }
 
     @Override
-    public void gameStarted() {
+    public synchronized void gameStarted()  {
         try {
             rpcReader.readLine();
             rpcWriter.println("7");
@@ -161,11 +175,13 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            running = false;
         }
     }
 
     @Override
-    public void gameOver() {
+    public synchronized void gameOver()  {
         try {
             rpcReader.readLine();
             rpcWriter.println("8");
@@ -176,6 +192,8 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            running = false;
         }
     }
 
@@ -185,12 +203,14 @@ public class PlayerClientProxy implements Player {
     }
 
     @Override
-    public void endConnection() {
+    public synchronized void endConnection()  {
         try {
             rpcReader.readLine();
             rpcWriter.println("8");
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            running = false;
         }
     }
 }

@@ -1,24 +1,24 @@
 package main.java.model;
 
 public interface Player {
-    void setGameBoard(int[][] gameBoard);
+    void setGameBoard(int[][] gameBoard) ;
 
-    void setPlayerPosition(int x, int y);
+    void setPlayerPosition(int x, int y) ;
 
-    void setOpponent(String playerId, String name, int x, int y);
+    void setOpponent(String playerId, String name, int x, int y) ;
 
-    void setPlayerScore(int score);
+    void setPlayerScore(int score) ;
 
-    void setOpponentScore(String playerId, int score);
+    void setOpponentScore(String playerId, int score) ;
 
-    void setGhostPosition(String ghostId, int x, int y);
+    void setGhostPosition(String ghostId, int x, int y) ;
 
-    void gameStarted();
+    void gameStarted() ;
 
-    void gameOver();
+    void gameOver() ;
 
     String getName();
 
     // Only in the PlayerClient
-    void endConnection();
+    void endConnection() ;
 }

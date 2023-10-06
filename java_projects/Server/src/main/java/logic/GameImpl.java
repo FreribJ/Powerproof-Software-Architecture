@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GameImpl implements Game {
     private final Map<Player, PacMan> players = new ConcurrentHashMap<>();
+    private final Map<Player, String> directions = new ConcurrentHashMap<>();
     private final List<Ghost> ghosts = new ArrayList<>();
 
     //2: Wand; 1: Maze-Block; 0: Leeres Feld
@@ -77,9 +78,7 @@ public class GameImpl implements Game {
         if (!gameStarted) throw new GameNotStartedException();
         PacMan pacMan = players.get(player);
         if (pacMan == null) throw new PlayerNotInTheGameException(player);
-        pacMan.moveLeft(gameBoard);
-        informPlayersAboutPlayersPosition(player);
-        checkPoints(player);
+        directions.put(player, "left");
     }
 
     @Override
@@ -87,9 +86,7 @@ public class GameImpl implements Game {
         if (!gameStarted) throw new GameNotStartedException();
         PacMan pacMan = players.get(player);
         if (pacMan == null) throw new PlayerNotInTheGameException(player);
-        pacMan.moveRight(gameBoard);
-        informPlayersAboutPlayersPosition(player);
-        checkPoints(player);
+        directions.put(player, "right");
     }
 
     @Override
@@ -97,9 +94,7 @@ public class GameImpl implements Game {
         if (!gameStarted) throw new GameNotStartedException();
         PacMan pacMan = players.get(player);
         if (pacMan == null) throw new PlayerNotInTheGameException(player);
-        pacMan.moveUp(gameBoard);
-        informPlayersAboutPlayersPosition(player);
-        checkPoints(player);
+        directions.put(player, "up");
     }
 
     @Override
@@ -107,22 +102,22 @@ public class GameImpl implements Game {
         if (!gameStarted) throw new GameNotStartedException();
         PacMan pacMan = players.get(player);
         if (pacMan == null) throw new PlayerNotInTheGameException(player);
-        pacMan.moveDown(gameBoard);
-        informPlayersAboutPlayersPosition(player);
-        checkPoints(player);
+        directions.put(player, "down");
     }
 
     @Override
     public void startGame() {
-        players.keySet().forEach(Player::gameStarted);
-        gameStarted = true;
-        for (int i = 0; i < 3; i++) {
-            int x = (int) (Math.random() * 6 + 11);
-            int y = (int) (Math.random() * 3 + 13);
-            Ghost ghost = new Ghost(x, y);
-            ghosts.add(ghost);
+        if (!gameStarted) {
+            players.keySet().forEach(Player::gameStarted);
+            gameStarted = true;
+            for (int i = 0; i < 3; i++) {
+                int x = (int) (Math.random() * 6 + 11);
+                int y = (int) (Math.random() * 3 + 13);
+                Ghost ghost = new Ghost(x, y);
+                ghosts.add(ghost);
+            }
+            new Thread(this::move).start();
         }
-        new Thread(this::moveGhosts).start();
     }
 
     private void informPlayersAboutPlayersPosition(Player player) {
@@ -154,7 +149,7 @@ public class GameImpl implements Game {
         }
     }
 
-    private void moveGhosts() {
+    private void move() {
         while (gameStarted) {
             try {
                 Thread.sleep(500);
@@ -169,9 +164,24 @@ public class GameImpl implements Game {
                         pacMan.setX(1);
                         pacMan.setY(1);
                         player.setPlayerPosition(1, 1);
+                        pacMan.addPoints(-10);
+                        player.setPlayerScore(pacMan.getPoints());
                     }
                 });
                 g.move(gameBoard);
+            });
+            players.forEach((player, pacMan) -> {
+                String direction = directions.get(player);
+                if (direction != null) {
+                    switch (direction) {
+                        case "left" -> pacMan.moveLeft(gameBoard);
+                        case "right" -> pacMan.moveRight(gameBoard);
+                        case "up" -> pacMan.moveUp(gameBoard);
+                        case "down" -> pacMan.moveDown(gameBoard);
+                    }
+                    informPlayersAboutPlayersPosition(player);
+                    checkPoints(player);
+                }
             });
         }
     }

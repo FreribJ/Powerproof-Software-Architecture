@@ -54,7 +54,6 @@ public class PlayerView implements Player {
         } else {
             opponent.moveToCoordinate(x, y);
         }
-        System.out.println("setOpponent: " + playerId + " " + name + " " + x + " " + y);
     }
 
     @Override
@@ -65,7 +64,6 @@ public class PlayerView implements Player {
         } else {
             this.score.setText("Score: " + score);
         }
-        System.out.println("setPlayerScore: " + score);
     }
 
     @Override
@@ -78,7 +76,6 @@ public class PlayerView implements Player {
         } else {
             opponentScore.setText(opponentNames.get(playerId) + ": " + score);
         }
-        System.out.println("setOpponentScore: " + playerId + " " + score);
     }
 
     @Override

@@ -173,14 +173,17 @@ public class GameImpl implements Game {
             players.forEach((player, pacMan) -> {
                 String direction = directions.get(player);
                 if (direction != null) {
+                    boolean moved = false;
                     switch (direction) {
-                        case "left" -> pacMan.moveLeft(gameBoard);
-                        case "right" -> pacMan.moveRight(gameBoard);
-                        case "up" -> pacMan.moveUp(gameBoard);
-                        case "down" -> pacMan.moveDown(gameBoard);
+                        case "left" -> moved = pacMan.moveLeft(gameBoard);
+                        case "right" -> moved = pacMan.moveRight(gameBoard);
+                        case "up" -> moved = pacMan.moveUp(gameBoard);
+                        case "down" -> moved = pacMan.moveDown(gameBoard);
                     }
-                    informPlayersAboutPlayersPosition(player);
-                    checkPoints(player);
+                    if (moved) {
+                        informPlayersAboutPlayersPosition(player);
+                        checkPoints(player);
+                    }
                 }
             });
         }

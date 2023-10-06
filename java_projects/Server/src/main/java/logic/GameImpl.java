@@ -6,6 +6,7 @@ import main.java.exception.PlayerNotInTheGameException;
 import main.java.model.Game;
 import main.java.model.Player;
 
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -151,24 +152,13 @@ public class GameImpl implements Game {
 
     private void move() {
         while (gameStarted) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            LocalTime start = LocalTime.now();
             ghosts.forEach(g -> {
+                g.move(gameBoard);
                 players.forEach((player, pacMan) -> {
                     player.setGhostPosition(Integer.toString(g.getGhostId()), g.getX(), g.getY());
-
-                    if (pacMan.getX() == g.getX() && pacMan.getY() == g.getY()) {
-                        pacMan.setX(1);
-                        pacMan.setY(1);
-                        player.setPlayerPosition(1, 1);
-                        pacMan.addPoints(-10);
-                        player.setPlayerScore(pacMan.getPoints());
-                    }
+                    checkForCollision(g, player, pacMan);
                 });
-                g.move(gameBoard);
             });
             players.forEach((player, pacMan) -> {
                 String direction = directions.get(player);
@@ -186,6 +176,24 @@ public class GameImpl implements Game {
                     }
                 }
             });
+            ghosts.forEach(g -> players.forEach((player, pacMan) -> checkForCollision(g, player, pacMan)));
+            while (LocalTime.now().isBefore(start.plusNanos(500000000))) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void checkForCollision(Ghost g, Player player, PacMan pacMan) {
+        if (pacMan.getX() == g.getX() && pacMan.getY() == g.getY()) {
+            pacMan.setX(1);
+            pacMan.setY(1);
+            player.setPlayerPosition(1, 1);
+            pacMan.addPoints(-10);
+            player.setPlayerScore(pacMan.getPoints());
         }
     }
 }

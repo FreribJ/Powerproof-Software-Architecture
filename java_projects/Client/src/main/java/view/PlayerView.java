@@ -30,6 +30,9 @@ public class PlayerView implements Player {
         view.setBackgroundColor(Color.BLACK);
         char menuChoice = displayMenu();
         this.name = name;
+        Text header = new Text(350, 10, "PacMan");
+        header.setFontColor(Color.WHITE);
+        header.setFontMonospaced(true, 30);
         game.addPlayer(this);
         boolean running = true;
         if (menuChoice == '1') {
@@ -55,10 +58,6 @@ public class PlayerView implements Player {
                 default -> System.out.println("Wrong input");
             }
         }
-
-        Text header = new Text(350, 10, "PacMan");
-        header.setFontColor(Color.WHITE);
-        header.setFontMonospaced(true, 30);
     }
 
     private char displayMenu() {

@@ -38,6 +38,11 @@ public class PlayerView implements Player {
     }
 
     @Override
+    public void removeScorePoint(int x, int y) {
+        this.gameBoard.removeScorePoint(x, y);
+    }
+
+    @Override
     public void setPlayerPosition(int x, int y) {
         if (this.pacman == null) {
             this.pacman = new PacmanView(false, x, y, pixelWidth);

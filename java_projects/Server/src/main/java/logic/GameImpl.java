@@ -111,7 +111,7 @@ public class GameImpl implements Game {
         if (!gameStarted) {
             players.keySet().forEach(Player::gameStarted);
             gameStarted = true;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 int x = (int) (Math.random() * 6 + 11);
                 int y = (int) (Math.random() * 3 + 13);
                 Ghost ghost = new Ghost(x, y);
@@ -138,7 +138,7 @@ public class GameImpl implements Game {
             gameBoard[pacMan.getX()][pacMan.getY()] = 0;
             player.setPlayerScore(pacMan.getPoints());
             players.forEach((player1, pacMan1) -> {
-                player1.setGameBoard(gameBoard);
+                player1.removeScorePoint(pacMan.getX(), pacMan.getY());
                 if (player1 != player) {
                     player1.setOpponentScore(Integer.toString(pacMan.getPacManId()), pacMan.getPoints());
                 }

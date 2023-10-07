@@ -16,8 +16,6 @@ public class PlayerClientProxy implements Player {
     private final RPCReader rpcReader;
     private final RPCWriter rpcWriter;
 
-    private boolean running = false;
-
     public PlayerClientProxy(Socket socket, String name) throws IOException {
         this.name = name;
         this.socket = socket;
@@ -49,8 +47,25 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            running = false;
+        }
+    }
+
+    @Override
+    public void removeScorePoint(int x, int y) {
+        try {
+            rpcReader.readLine();
+            rpcWriter.println("9");
+            rpcReader.readLine();
+            rpcWriter.println(x);
+            rpcReader.readLine();
+            rpcWriter.println(y);
+            String returnCode = rpcReader.readLine();
+            if (returnCode.startsWith("0")) {
+                return;
+            }
+            throw new RuntimeException(returnCode);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -70,8 +85,6 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException  e) {
             throw new RuntimeException(e);
-        } finally {
-            running = false;
         }
     }
 
@@ -96,8 +109,6 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException  e) {
             throw new RuntimeException(e);
-        } finally {
-            running = false;
         }
     }
 
@@ -115,8 +126,6 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            running = false;
         }
     }
 
@@ -136,8 +145,6 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException  e) {
             throw new RuntimeException(e);
-        } finally {
-            running = false;
         }
     }
 
@@ -158,8 +165,6 @@ public class PlayerClientProxy implements Player {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            running = false;
         }
     }
 
@@ -175,8 +180,6 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            running = false;
         }
     }
 
@@ -192,8 +195,6 @@ public class PlayerClientProxy implements Player {
             throw new RuntimeException(returnCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            running = false;
         }
     }
 
@@ -206,11 +207,9 @@ public class PlayerClientProxy implements Player {
     public synchronized void endConnection()  {
         try {
             rpcReader.readLine();
-            rpcWriter.println("8");
+            rpcWriter.println("10");
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            running = false;
         }
     }
 }

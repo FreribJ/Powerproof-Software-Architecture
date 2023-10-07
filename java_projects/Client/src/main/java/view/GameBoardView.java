@@ -6,11 +6,13 @@ import sas.View;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameBoardView {
     List<Rectangle> boarders = new ArrayList<>();
-    List<Circle> circles = new ArrayList<>();
+    Map<String, Circle> circles = new HashMap<>();
     int[][] gameBoard;
     private View view;
     private int pixelWidth;
@@ -27,10 +29,19 @@ public class GameBoardView {
         draw();
     }
 
+    public void removeScorePoint(int x, int y) {
+        String key = x + ";" + y;
+        Circle circle = circles.get(key);
+        if (circle != null) {
+            view.remove(circle);
+            circles.remove(key);
+        }
+    }
+
     private void draw() {
         boarders.forEach(view::remove);
         boarders.clear();
-        circles.forEach(view::remove);
+        circles.values().forEach(view::remove);
         circles.clear();
         for (int i = 0; i < gameBoard.length; i++) {
             int[] row = gameBoard[i];
@@ -39,7 +50,7 @@ public class GameBoardView {
                 if (field == 2) {
                     boarders.add(new Rectangle(i * pixelWidth + 120, j * pixelWidth + 170, pixelWidth, pixelWidth, Color.BLUE));
                 } else if (field == 1) {
-                    circles.add(new Circle(i * pixelWidth + pixelWidth / 2 + 119, j * pixelWidth + pixelWidth / 2 + 169, 2, Color.WHITE));
+                    circles.put(i + ";" + j,new Circle(i * pixelWidth + pixelWidth / 2 + 119, j * pixelWidth + pixelWidth / 2 + 169, 2, Color.WHITE));
                 }
             }
         }

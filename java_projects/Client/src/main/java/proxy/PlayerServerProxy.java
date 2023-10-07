@@ -27,7 +27,7 @@ public class PlayerServerProxy implements Runnable {
     @Override
     public void run() {
         while (running) {
-            rpcWriter.println("PROTOCOL: 1. setGameBoard; 2. setPlayerPosition; 3. setOpponent; 4. setPlayerScore; 5. setOpponentScore; 6. setGhostPosition; 7. gameStarted; 8. gameOver; 9. endConnection");
+            rpcWriter.println("PROTOCOL: 1. setGameBoard; 2. setPlayerPosition; 3. setOpponent; 4. setPlayerScore; 5. setOpponentScore; 6. setGhostPosition; 7. gameStarted; 8. gameOver; 9. removeScorePoint; 10. endConnection");
             try {
                 String input = rpcReader.readLine();
                 switch (input) {
@@ -39,7 +39,8 @@ public class PlayerServerProxy implements Runnable {
                     case "6" -> setGhostPosition();
                     case "7" -> gameStarted();
                     case "8" -> gameOver();
-                    case "9" -> endConnection();
+                    case "9" -> removeScorePoint();
+                    case "10" -> endConnection();
                     default -> rpcWriter.println("PROTOCOL ERROR: " + input);
                 }
             } catch (IOException e) {
@@ -129,5 +130,14 @@ public class PlayerServerProxy implements Runnable {
     private void endConnection() throws IOException {
         socket.close();
         running = false;
+    }
+
+    private void removeScorePoint() throws IOException {
+        rpcWriter.println("REQUEST: x-Position");
+        int x = Integer.parseInt(rpcReader.readLine());
+        rpcWriter.println("REQUEST: y-Position");
+        int y = Integer.parseInt(rpcReader.readLine());
+        player.removeScorePoint(x, y);
+        rpcWriter.println("0: Okay");
     }
 }

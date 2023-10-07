@@ -3,6 +3,8 @@ package main.java.model;
 public interface Player {
     void setGameBoard(int[][] gameBoard);
 
+    void removeScorePoint(int x, int y) ;
+
     void setPlayerPosition(int x, int y);
 
     void setOpponent(String playerId, String name, int x, int y);

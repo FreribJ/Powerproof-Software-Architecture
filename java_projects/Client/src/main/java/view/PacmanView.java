@@ -9,14 +9,14 @@ public class PacmanView extends Picture {
     private int yPosition;
 
     public PacmanView(boolean opponent, int x, int y, int pixelWidth) {
-        super(x * pixelWidth + 120, y * pixelWidth + 170, pixelWidth, pixelWidth, opponent ? "pacman-opponent.png" : "pacman.png");
+        super(x * pixelWidth + 120, y * pixelWidth + 130, pixelWidth, pixelWidth, opponent ? "pacman-opponent.png" : "pacman.png");
         xPosition = x;
         yPosition = y;
         this.pixelWidth = pixelWidth;
     }
 
     public void moveToCoordinate(int x, int y) {
-        this.moveTo(x * pixelWidth + 120, y * pixelWidth + 170);
+        this.moveTo(x * pixelWidth + 120, y * pixelWidth + 130);
         if (xPosition < x) {
             this.turnTo(90);
         } else if (xPosition > x) {

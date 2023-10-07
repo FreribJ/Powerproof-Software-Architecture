@@ -10,7 +10,9 @@ import sas.Text;
 import sas.View;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerView implements Player {
 
@@ -33,6 +35,10 @@ public class PlayerView implements Player {
         Text header = new Text(350, 10, "PacMan");
         header.setFontColor(Color.WHITE);
         header.setFontMonospaced(true, 30);
+        //Button exit = new Button(700, 10, 70, 40, "Exit", Color.RED);
+        Text tipps = new Text(330, 750, "WASD to move; press e to exit");
+        tipps.setFontColor(Color.WHITE);
+        tipps.setFontMonospaced(true, 20);
         game.addPlayer(this);
         boolean running = true;
         if (menuChoice == '1') {
@@ -43,18 +49,14 @@ public class PlayerView implements Player {
         }
 
         while (running) {
+
             char choice = view.keyGetChar();
             switch (choice) {
-                case '2' -> game.removePlayer(this);
                 case 'a' -> game.movePlayerLeft(this);
                 case 'd' -> game.movePlayerRight(this);
                 case 'w' -> game.movePlayerUp(this);
                 case 's' -> game.movePlayerDown(this);
-                case '7' -> game.startGame();
-                case '8' -> {
-                    game.endConnection();
-                    running = false;
-                }
+                case 'e' -> game.endConnection();
                 default -> System.out.println("Wrong input");
             }
         }
@@ -127,8 +129,9 @@ public class PlayerView implements Player {
     @Override
     public void setPlayerScore(int score) {
         if (this.score == null) {
-            this.score = new Text(100, 100, "Score: " + score);
+            this.score = new Text(100, 70, "Score: " + score);
             this.score.setFontColor(Color.WHITE);
+            this.score.setFontMonospaced(true, 24);
         } else {
             this.score.setText("Score: " + score);
         }
@@ -138,8 +141,9 @@ public class PlayerView implements Player {
     public void setOpponentScore(String playerId, int score) {
         Text opponentScore = opponentScores.get(playerId);
         if (opponentScore == null) {
-            opponentScore = new Text(100 + (150 * (opponentScores.size() + 1)), 100, opponentNames.get(playerId) + ": " + score);
+            opponentScore = new Text(100 + (150 * (opponentScores.size() + 1)), 70, opponentNames.get(playerId) + ": " + score);
             opponentScore.setFontColor(Color.WHITE);
+            opponentScore.setFontMonospaced(true, 24);
             opponentScores.put(playerId, opponentScore);
         } else {
             opponentScore.setText(opponentNames.get(playerId) + ": " + score);

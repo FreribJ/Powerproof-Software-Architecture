@@ -12,6 +12,7 @@ import sas.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -34,11 +35,20 @@ public class Main {
         }
         View view = new View(800, 800, "PacMan");
         view.setBackgroundColor(Color.BLACK);
-        Player player = new PlayerView(name, view);
         Socket socket = new Socket(ip, 10000);
         Game game = new GameClientProxy(socket);
+        char menuChoice = displayMenu(view);
+        Player player = new PlayerView(name, view);
         game.addPlayer(player);
+
         boolean running = true;
+        if (menuChoice == '1') {
+            game.startGame();
+        } else {
+            game.endConnection();
+            running = false;
+        }
+
         while (running) {
             System.out.println("PROTOCOL: 1. addPlayer; 2. removePlayer; 3. movePlayerLeft; 4. movePlayerRight; 5. movePlayerUp; 6. movePlayerDown; 7. startGame; 8. endConnection");
                 char choice = view.keyGetChar();
@@ -56,5 +66,32 @@ public class Main {
                 default -> System.out.println("Wrong input");
             }
         }
+    }
+    private static char displayMenu(View view) {
+        ArrayList<Text> menu = new ArrayList<Text>();
+        menu.add(new Text(350, 10, "PacMan"));
+        menu.add(new Text(100, 100, "Press Numbers to select:"));
+        menu.add(new Text(100, 150, "1. Start Game"));
+        menu.add(new Text(100, 200, "2. Leave Game"));
+        menu.add(new Text(100, 700, "Controls: WASD"));
+        for (Text item : menu) {
+            item.setFontColor(Color.WHITE);
+            item.setFontMonospaced(true, 30);
+        }
+        boolean inMenu = true;
+        char ret = 0;
+        while (inMenu) {
+            char choice = view.keyGetChar();
+            if (choice == '1' || choice == '2') {
+                inMenu = false;
+                ret = choice;
+            } else {
+                System.out.println("Menu: Wrong input");
+            }
+        }
+        for (Text item : menu) {
+            view.remove(item);
+        }
+        return ret;
     }
 }

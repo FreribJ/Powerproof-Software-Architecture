@@ -1,6 +1,7 @@
 package main.java.view;
 
 import main.java.model.Player;
+import sas.Rectangle;
 import sas.Text;
 import sas.View;
 
@@ -26,6 +27,8 @@ public class PlayerView implements Player {
         header.setFontMonospaced(true, 30);
         this.name = name;
     }
+
+
 
     @Override
     public void setGameBoard(int[][] gameBoard) {
@@ -96,6 +99,39 @@ public class PlayerView implements Player {
     @Override
     public void gameOver() {
         System.out.println("Game over");
+        Rectangle endScreen = new Rectangle(0,0,view.getWidth(),view.getHeight());
+        endScreen.setColor(Color.BLACK);
+
+        ArrayList<String> playerNames = new ArrayList<String>();
+        ArrayList<String> playerScores = new ArrayList<String>();
+        for (String key : opponentScores.keySet()) {
+            playerNames.add(opponentNames.get(key));
+            playerScores.add(opponentScores.get(key).getText());
+        }
+        playerNames.add(getName());
+        playerScores.add(score.getText());
+
+        ArrayList<Text> endText = new ArrayList<Text>();
+        int playerCount = playerScores.size();
+        for (int i = 0; i < playerCount; i++){
+            int nextHighestScore = 0;
+            for (int j = 0; j < playerScores.size(); j++){
+                if (Integer.parseInt(playerScores.get(j).replaceAll("[^0-9]", "")) > Integer.parseInt(playerScores.get(nextHighestScore).replaceAll("[^0-9]", ""))){
+                    nextHighestScore = j;
+                }
+            }
+
+            endText.add(new Text(100, 150 + i * 50, "" + (i + 1) + ". " + playerNames.get(nextHighestScore) + ": " + playerScores.get(nextHighestScore).replaceAll("[^0-9]", "") + " Pts."));
+            playerNames.remove(nextHighestScore);
+            playerScores.remove(nextHighestScore);
+        }
+        endText.add(new Text(350, 10, "Game Over!"));
+        endText.add(new Text(100, 100, "Score Board:"));
+        endText.add(new Text(100, 700, "Thank you for playing!"));
+        for (Text item : endText) {
+            item.setFontColor(Color.WHITE);
+            item.setFontMonospaced(true, 30);
+        }
     }
 
     @Override

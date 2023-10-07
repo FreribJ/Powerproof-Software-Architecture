@@ -109,8 +109,8 @@ public class GameImpl implements Game {
     @Override
     public void startGame() {
         if (!gameStarted) {
-            players.keySet().forEach(Player::gameStarted);
             gameStarted = true;
+            players.keySet().forEach(Player::gameStarted);
             for (int i = 0; i < 4; i++) {
                 int x = (int) (Math.random() * 6 + 11);
                 int y = (int) (Math.random() * 3 + 13);

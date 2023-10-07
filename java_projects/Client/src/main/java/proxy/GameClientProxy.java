@@ -19,6 +19,9 @@ import java.util.Map;
 
 public class GameClientProxy implements Game {
 
+    private static final boolean LOCAL = false;
+    private static final String VPN_IP_ADDRESS = "25.40.80.245";
+
     private Socket socket;
     private RPCWriter rpcWriter;
     private RPCReader rpcReader;
@@ -206,7 +209,10 @@ public class GameClientProxy implements Game {
                 rpcReader.readLine();
                 rpcWriter.println(maxId);
                 rpcReader.readLine();
-                rpcWriter.println(Utility.getLocalIpAddress());
+                if (LOCAL)
+                    rpcWriter.println(Utility.getLocalIpAddress());
+                else
+                    rpcWriter.println(VPN_IP_ADDRESS);
                 rpcReader.readLine();
                 ServerSocket serverSocket = new ServerSocket(0);
                 rpcWriter.println(serverSocket.getLocalPort());

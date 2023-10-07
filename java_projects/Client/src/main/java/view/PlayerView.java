@@ -1,5 +1,9 @@
 package main.java.view;
 
+import main.java.exception.GameNotStartedException;
+import main.java.exception.PlayerAlreadyAddedException;
+import main.java.exception.PlayerNotInTheGameException;
+import main.java.model.Game;
 import main.java.model.Player;
 import sas.Rectangle;
 import sas.Text;
@@ -9,6 +13,7 @@ import java.awt.*;
 import java.util.*;
 
 public class PlayerView implements Player {
+
     private static final int pixelWidth = 20;
     private final String name;
     private View view;
@@ -20,12 +25,69 @@ public class PlayerView implements Player {
     private Map<String, Text> opponentScores = new HashMap<>();
     private Map<String, String> opponentNames = new HashMap<>();
 
-    public PlayerView(String name, View view) {
-        this.view = view;
+    public PlayerView(String name, Game game) throws PlayerAlreadyAddedException, PlayerNotInTheGameException, GameNotStartedException {
+        this.view = new View(800, 800, "PacMan");
+        view.setBackgroundColor(Color.BLACK);
+        char menuChoice = displayMenu();
+
+        game.addPlayer(this);
+        boolean running = true;
+        if (menuChoice == '1') {
+            game.startGame();
+        } else {
+            game.endConnection();
+            running = false;
+        }
+
+        while (running) {
+            char choice = view.keyGetChar();
+            switch (choice) {
+                case '2' -> game.removePlayer(this);
+                case 'a' -> game.movePlayerLeft(this);
+                case 'd' -> game.movePlayerRight(this);
+                case 'w' -> game.movePlayerUp(this);
+                case 's' -> game.movePlayerDown(this);
+                case '7' -> game.startGame();
+                case '8' -> {
+                    game.endConnection();
+                    running = false;
+                }
+                default -> System.out.println("Wrong input");
+            }
+        }
+
         Text header = new Text(350, 10, "PacMan");
         header.setFontColor(Color.WHITE);
         header.setFontMonospaced(true, 30);
         this.name = name;
+    }
+
+    private char displayMenu() {
+        ArrayList<Text> menu = new ArrayList<Text>();
+        menu.add(new Text(350, 10, "PacMan"));
+        menu.add(new Text(100, 100, "Press Numbers to select:"));
+        menu.add(new Text(100, 150, "1. Start Game"));
+        menu.add(new Text(100, 200, "2. Leave Game"));
+        menu.add(new Text(100, 700, "Controls: WASD"));
+        for (Text item : menu) {
+            item.setFontColor(Color.WHITE);
+            item.setFontMonospaced(true, 30);
+        }
+        boolean inMenu = true;
+        char ret = 0;
+        while (inMenu) {
+            char choice = view.keyGetChar();
+            if (choice == '1' || choice == '2') {
+                inMenu = false;
+                ret = choice;
+            } else {
+                System.out.println("Menu: Wrong input");
+            }
+        }
+        for (Text item : menu) {
+            view.remove(item);
+        }
+        return ret;
     }
 
 

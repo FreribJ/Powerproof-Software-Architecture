@@ -5,11 +5,13 @@ import sas.Picture;
 public class PacmanView extends Picture {
 
     private int pixelWidth;
-    private int xPosition = 0;
-    private int yPosition = 0;
+    private int xPosition;
+    private int yPosition;
 
     public PacmanView(boolean opponent, int x, int y, int pixelWidth) {
         super(x * pixelWidth + 120, y * pixelWidth + 170, pixelWidth, pixelWidth, opponent ? "pacman-opponent.png" : "pacman.png");
+        xPosition = x;
+        yPosition = y;
         this.pixelWidth = pixelWidth;
     }
 

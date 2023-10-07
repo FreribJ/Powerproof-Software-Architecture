@@ -61,8 +61,9 @@ public class GameImpl implements Game {
         players.forEach((player1, pacMan1) -> {
             if (player1 != player) {
                 player.setOpponent(Integer.toString(pacMan1.getPacManId()), player1.getName(), pacMan1.getX(), pacMan1.getY());
-                player1.setOpponentScore(Integer.toString(pacMan.getPacManId()), pacMan.getPoints());
                 player.setOpponentScore(Integer.toString(pacMan1.getPacManId()), pacMan1.getPoints());
+                player1.setOpponent(Integer.toString(pacMan.getPacManId()), player.getName(), pacMan.getX(), pacMan.getY());
+                player1.setOpponentScore(Integer.toString(pacMan.getPacManId()), pacMan.getPoints());
             }
         });
         informPlayersAboutPlayersPosition(player);
@@ -194,6 +195,11 @@ public class GameImpl implements Game {
             player.setPlayerPosition(1, 1);
             pacMan.addPoints(-10);
             player.setPlayerScore(pacMan.getPoints());
+            players.forEach((player1, pacMan1) -> {
+                if (player1 != player) {
+                    player1.setOpponentScore(Integer.toString(pacMan.getPacManId()), pacMan.getPoints());
+                }
+            });
         }
     }
 }

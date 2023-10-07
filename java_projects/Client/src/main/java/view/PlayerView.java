@@ -29,7 +29,7 @@ public class PlayerView implements Player {
         this.view = new View(800, 800, "PacMan");
         view.setBackgroundColor(Color.BLACK);
         char menuChoice = displayMenu();
-
+        this.name = name;
         game.addPlayer(this);
         boolean running = true;
         if (menuChoice == '1') {
@@ -59,7 +59,6 @@ public class PlayerView implements Player {
         Text header = new Text(350, 10, "PacMan");
         header.setFontColor(Color.WHITE);
         header.setFontMonospaced(true, 30);
-        this.name = name;
     }
 
     private char displayMenu() {
@@ -123,6 +122,7 @@ public class PlayerView implements Player {
         } else {
             opponent.moveToCoordinate(x, y);
         }
+        System.out.println("Opponent: " + name + " " + x + " " + y);
     }
 
     @Override
@@ -145,6 +145,7 @@ public class PlayerView implements Player {
         } else {
             opponentScore.setText(opponentNames.get(playerId) + ": " + score);
         }
+        System.out.println("Opponent score: " + playerId + " " + score);
     }
 
     @Override

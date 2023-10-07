@@ -29,7 +29,6 @@ public class PlayerView implements Player {
     }
 
 
-
     @Override
     public void setGameBoard(int[][] gameBoard) {
         if (this.gameBoard == null) {
@@ -85,7 +84,7 @@ public class PlayerView implements Player {
     public void setGhostPosition(String ghostId, int x, int y) {
         GhostView ghost = ghosts.get(ghostId);
         if (ghost == null) {
-            ghost = new GhostView(x, y, pixelWidth);
+            ghost = new GhostView(x, y, pixelWidth, Integer.parseInt(ghostId));
             ghosts.put(ghostId, ghost);
         } else
             ghost.moveToCoordinate(x, y);
@@ -99,7 +98,7 @@ public class PlayerView implements Player {
     @Override
     public void gameOver() {
         System.out.println("Game over");
-        Rectangle endScreen = new Rectangle(0,0,view.getWidth(),view.getHeight());
+        Rectangle endScreen = new Rectangle(0, 0, view.getWidth(), view.getHeight());
         endScreen.setColor(Color.BLACK);
 
         ArrayList<String> playerNames = new ArrayList<String>();
@@ -113,10 +112,10 @@ public class PlayerView implements Player {
 
         ArrayList<Text> endText = new ArrayList<Text>();
         int playerCount = playerScores.size();
-        for (int i = 0; i < playerCount; i++){
+        for (int i = 0; i < playerCount; i++) {
             int nextHighestScore = 0;
-            for (int j = 0; j < playerScores.size(); j++){
-                if (Integer.parseInt(playerScores.get(j).replaceAll("[^0-9]", "")) > Integer.parseInt(playerScores.get(nextHighestScore).replaceAll("[^0-9]", ""))){
+            for (int j = 0; j < playerScores.size(); j++) {
+                if (Integer.parseInt(playerScores.get(j).replaceAll("[^0-9]", "")) > Integer.parseInt(playerScores.get(nextHighestScore).replaceAll("[^0-9]", ""))) {
                     nextHighestScore = j;
                 }
             }

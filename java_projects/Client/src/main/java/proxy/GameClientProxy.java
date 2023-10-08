@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class GameClientProxy implements Game {
 
-    private static final boolean LOCAL = false;
+    private static final boolean LOCAL = true;
     private static final String VPN_IP_ADDRESS = "25.32.196.220";
 
     private Socket socket;

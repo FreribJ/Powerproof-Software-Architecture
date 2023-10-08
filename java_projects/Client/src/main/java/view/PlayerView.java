@@ -39,23 +39,23 @@ public class PlayerView implements Player {
         Text tipps = new Text(330, 750, "WASD to move; press e to exit");
         tipps.setFontColor(Color.WHITE);
         tipps.setFontMonospaced(true, 20);
-        game.addPlayer(this);
         boolean running = true;
         if (menuChoice == '1') {
-            game.startGame();
+            game.addPlayer(this);
         } else {
             game.endConnection();
             running = false;
         }
 
         while (running) {
-
             char choice = view.keyGetChar();
             switch (choice) {
+                case '2' -> game.removePlayer(this);
                 case 'a' -> game.movePlayerLeft(this);
                 case 'd' -> game.movePlayerRight(this);
                 case 'w' -> game.movePlayerUp(this);
                 case 's' -> game.movePlayerDown(this);
+                case '7' -> game.startGame();
                 case 'e' -> game.endConnection();
                 default -> System.out.println("Wrong input");
             }
@@ -66,9 +66,10 @@ public class PlayerView implements Player {
         ArrayList<Text> menu = new ArrayList<Text>();
         menu.add(new Text(350, 10, "PacMan"));
         menu.add(new Text(100, 100, "Press Numbers to select:"));
-        menu.add(new Text(100, 150, "1. Start Game"));
+        menu.add(new Text(100, 150, "1. Join Game"));
         menu.add(new Text(100, 200, "2. Leave Game"));
         menu.add(new Text(100, 700, "Controls: WASD"));
+        menu.add(new Text(100, 750,"After joining, hit '7' to start the game"));
         for (Text item : menu) {
             item.setFontColor(Color.WHITE);
             item.setFontMonospaced(true, 30);

@@ -10,7 +10,9 @@ import sas.Text;
 import sas.View;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerView implements Player {
 
@@ -21,7 +23,7 @@ public class PlayerView implements Player {
     private PacmanView pacman;
     private Map<String, PacmanView> opponents = new HashMap<>();
     private GameBoardView gameBoard;
-    private Text score, pressToStart;
+    private Text score;
     private Map<String, Text> opponentScores = new HashMap<>();
     private Map<String, String> opponentNames = new HashMap<>();
 
@@ -32,9 +34,11 @@ public class PlayerView implements Player {
         this.name = name;
         Text header = new Text(350, 10, "PacMan");
         header.setFontColor(Color.WHITE);
-//        pressToStart = new Text(50,50, "Press '7' to start the game!");
-//        pressToStart.setFontColor(Color.WHITE);
         header.setFontMonospaced(true, 30);
+        //Button exit = new Button(700, 10, 70, 40, "Exit", Color.RED);
+        Text tipps = new Text(330, 750, "WASD to move; press e to exit");
+        tipps.setFontColor(Color.WHITE);
+        tipps.setFontMonospaced(true, 20);
         boolean running = true;
         if (menuChoice == '1') {
             game.addPlayer(this);
@@ -51,14 +55,8 @@ public class PlayerView implements Player {
                 case 'd' -> game.movePlayerRight(this);
                 case 'w' -> game.movePlayerUp(this);
                 case 's' -> game.movePlayerDown(this);
-                case '7' -> {
-                    view.remove(pressToStart);
-                    game.startGame();
-                }
-                case '8' -> {
-                    game.endConnection();
-                    running = false;
-                }
+                case '7' -> game.startGame();
+                case 'e' -> game.endConnection();
                 default -> System.out.println("Wrong input");
             }
         }
@@ -132,8 +130,9 @@ public class PlayerView implements Player {
     @Override
     public void setPlayerScore(int score) {
         if (this.score == null) {
-            this.score = new Text(100, 100, "Score: " + score);
+            this.score = new Text(100, 70, "Score: " + score);
             this.score.setFontColor(Color.WHITE);
+            this.score.setFontMonospaced(true, 24);
         } else {
             this.score.setText("Score: " + score);
         }
@@ -143,8 +142,9 @@ public class PlayerView implements Player {
     public void setOpponentScore(String playerId, int score) {
         Text opponentScore = opponentScores.get(playerId);
         if (opponentScore == null) {
-            opponentScore = new Text(100 + (150 * (opponentScores.size() + 1)), 100, opponentNames.get(playerId) + ": " + score);
+            opponentScore = new Text(100 + (150 * (opponentScores.size() + 1)), 70, opponentNames.get(playerId) + ": " + score);
             opponentScore.setFontColor(Color.WHITE);
+            opponentScore.setFontMonospaced(true, 24);
             opponentScores.put(playerId, opponentScore);
         } else {
             opponentScore.setText(opponentNames.get(playerId) + ": " + score);

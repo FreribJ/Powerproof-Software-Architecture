@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GameBoardView {
-    List<Rectangle> boarders = new ArrayList<>();
+    List<Rectangle> borders = new ArrayList<>();
     Map<String, Circle> circles = new HashMap<>();
     int[][] gameBoard;
     private View view;
@@ -39,8 +39,8 @@ public class GameBoardView {
     }
 
     private void draw() {
-        boarders.forEach(view::remove);
-        boarders.clear();
+        borders.forEach(view::remove);
+        borders.clear();
         circles.values().forEach(view::remove);
         circles.clear();
         for (int i = 0; i < gameBoard.length; i++) {
@@ -48,7 +48,7 @@ public class GameBoardView {
             for (int j = 0; j < row.length; j++) {
                 int field = row[j];
                 if (field == 2) {
-                    boarders.add(new Rectangle(i * pixelWidth + 120, j * pixelWidth + 170, pixelWidth, pixelWidth, Color.BLUE));
+                    borders.add(new Rectangle(i * pixelWidth + 120, j * pixelWidth + 170, pixelWidth, pixelWidth, Color.BLUE));
                 } else if (field == 1) {
                     circles.put(i + ";" + j,new Circle(i * pixelWidth + pixelWidth / 2 + 119, j * pixelWidth + pixelWidth / 2 + 169, 2, Color.WHITE));
                 }

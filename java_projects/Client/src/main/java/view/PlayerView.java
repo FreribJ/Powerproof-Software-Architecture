@@ -21,7 +21,7 @@ public class PlayerView implements Player {
     private PacmanView pacman;
     private Map<String, PacmanView> opponents = new HashMap<>();
     private GameBoardView gameBoard;
-    private Text score;
+    private Text score, pressToStart;
     private Map<String, Text> opponentScores = new HashMap<>();
     private Map<String, String> opponentNames = new HashMap<>();
 
@@ -32,11 +32,12 @@ public class PlayerView implements Player {
         this.name = name;
         Text header = new Text(350, 10, "PacMan");
         header.setFontColor(Color.WHITE);
+//        pressToStart = new Text(50,50, "Press '7' to start the game!");
+//        pressToStart.setFontColor(Color.WHITE);
         header.setFontMonospaced(true, 30);
-        game.addPlayer(this);
         boolean running = true;
         if (menuChoice == '1') {
-            game.startGame();
+            game.addPlayer(this);
         } else {
             game.endConnection();
             running = false;
@@ -50,7 +51,10 @@ public class PlayerView implements Player {
                 case 'd' -> game.movePlayerRight(this);
                 case 'w' -> game.movePlayerUp(this);
                 case 's' -> game.movePlayerDown(this);
-                case '7' -> game.startGame();
+                case '7' -> {
+                    view.remove(pressToStart);
+                    game.startGame();
+                }
                 case '8' -> {
                     game.endConnection();
                     running = false;
@@ -64,9 +68,10 @@ public class PlayerView implements Player {
         ArrayList<Text> menu = new ArrayList<Text>();
         menu.add(new Text(350, 10, "PacMan"));
         menu.add(new Text(100, 100, "Press Numbers to select:"));
-        menu.add(new Text(100, 150, "1. Start Game"));
+        menu.add(new Text(100, 150, "1. Join Game"));
         menu.add(new Text(100, 200, "2. Leave Game"));
         menu.add(new Text(100, 700, "Controls: WASD"));
+        menu.add(new Text(100, 750,"After joining, hit '7' to start the game"));
         for (Text item : menu) {
             item.setFontColor(Color.WHITE);
             item.setFontMonospaced(true, 30);

@@ -51,7 +51,7 @@ public class PlayerClientProxy implements Player {
     }
 
     @Override
-    public void removeScorePoint(int x, int y) {
+    public synchronized void removeScorePoint(int x, int y) {
         try {
             rpcReader.readLine();
             rpcWriter.println("9");

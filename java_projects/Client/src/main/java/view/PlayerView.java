@@ -186,13 +186,15 @@ public class PlayerView implements Player {
         ArrayList<Text> endText = new ArrayList<Text>();
         int playerCount = playerScores.size();
         for (int i = 0; i < playerCount; i++) {
+            int nextHighestScore = Integer.parseInt(playerScores.get(0).substring(playerScores.get(0).lastIndexOf(':')).replaceAll("[^0-9-]", ""));
             int indexOfNextHighestScore = 0;
-            int nextHighestScore = 0;
             for (int j = 0; j < playerScores.size(); j++) {
-                int currentScore = Integer.parseInt(playerScores.get(j).replaceAll("[^0-9-]", ""));
-                nextHighestScore = Integer.parseInt(playerScores.get(indexOfNextHighestScore).substring(playerScores.get(indexOfNextHighestScore).lastIndexOf(':')).replaceAll("[^0-9-]", ""));
+                int currentScore = Integer.parseInt(playerScores.get(j).substring(playerScores.get(j).lastIndexOf(':')).replaceAll("[^0-9-]", ""));
+                //nextHighestScore = Integer.parseInt(playerScores.get(indexOfNextHighestScore).substring(playerScores.get(indexOfNextHighestScore).lastIndexOf(':')).replaceAll("[^0-9-]", ""));
                 if (currentScore > nextHighestScore) {
                     indexOfNextHighestScore = j;
+                    nextHighestScore = currentScore;
+
                 }
             }
 

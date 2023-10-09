@@ -56,6 +56,7 @@ public class PlayerView implements Player {
                 case 'w' -> game.movePlayerUp(this);
                 case 's' -> game.movePlayerDown(this);
                 case '7' -> game.startGame();
+                case 'p' -> this.gameOver(); //testing purposes
                 case 'e' -> game.endConnection();
                 default -> System.out.println("Wrong input");
             }
@@ -185,16 +186,19 @@ public class PlayerView implements Player {
         ArrayList<Text> endText = new ArrayList<Text>();
         int playerCount = playerScores.size();
         for (int i = 0; i < playerCount; i++) {
+            int indexOfNextHighestScore = 0;
             int nextHighestScore = 0;
             for (int j = 0; j < playerScores.size(); j++) {
-                if (Integer.parseInt(playerScores.get(j).replaceAll("[^0-9]", "")) > Integer.parseInt(playerScores.get(nextHighestScore).replaceAll("[^0-9]", ""))) {
-                    nextHighestScore = j;
+                int currentScore = Integer.parseInt(playerScores.get(j).replaceAll("[^0-9-]", ""));
+                nextHighestScore = Integer.parseInt(playerScores.get(indexOfNextHighestScore).substring(playerScores.get(indexOfNextHighestScore).lastIndexOf(':')).replaceAll("[^0-9-]", ""));
+                if (currentScore > nextHighestScore) {
+                    indexOfNextHighestScore = j;
                 }
             }
 
-            endText.add(new Text(100, 150 + i * 50, "" + (i + 1) + ". " + playerNames.get(nextHighestScore) + ": " + playerScores.get(nextHighestScore).replaceAll("[^0-9]", "") + " Pts."));
-            playerNames.remove(nextHighestScore);
-            playerScores.remove(nextHighestScore);
+            endText.add(new Text(100, 150 + i * 50, "" + (i + 1) + ". " + playerNames.get(indexOfNextHighestScore) + ": " + nextHighestScore + " Pts."));
+            playerNames.remove(indexOfNextHighestScore);
+            playerScores.remove(indexOfNextHighestScore);
         }
         endText.add(new Text(350, 10, "Game Over!"));
         endText.add(new Text(100, 100, "Score Board:"));
